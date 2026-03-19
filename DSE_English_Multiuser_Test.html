@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSE英语自适应学习 - 多账户版</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        /* LOGIN SCREEN */
+        .login-screen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            z-index: 1000;
+        }
+        .login-screen.hidden { display: none; }
+        .login-card {
+            background: white;
+            padding: 50px 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        .login-card h1 { font-size: 32px; color: #1f4788; margin-bottom: 10px; }
+        .login-card p { color: #666; margin-bottom: 30px; font-size: 14px; }
+        .student-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .student-btn {
+            padding: 20px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .student-btn:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+            transform: translateY(-2px);
+        }
+        .student-btn.son {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .student-btn.daughter {
+            border-color: #e91e63;
+            background: linear-gradient(135deg, #e91e63 0%, #f06292 100%);
+            color: white;
+        }
+        .login-info {
+            background: #f0f8ff;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            font-size: 12px;
+            color: #666;
+            margin-top: 20px;
+        }
+        
+        /* MAIN CONTAINER */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #1f4788 0%, #2a5aa5 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-left h1 { font-size: 24px; margin-bottom: 5px; }
+        .header-left p { font-size: 13px; opacity: 0.9; }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .user-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .user-badge.son-badge { background: rgba(102, 126, 234, 0.3); }
+        .user-badge.daughter-badge { background: rgba(233, 30, 99, 0.3); }
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.4);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+        }
+        .logout-btn:hover { background: rgba(255,255,255,0.3); }
+        
+        .content { padding: 30px; }
+        .info-box {
+            background: #fffacd;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ffb6c1;
+        }
+        .timer {
+            text-align: center;
+            color: #f44336;
+            font-weight: bold;
+            margin: 15px 0;
+            font-size: 18px;
+        }
+        .tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            padding: 12px 20px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #999;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        .tab-btn:hover { color: #667eea; }
+        .tab-btn.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+        .tab-content { display: none; }
+        .tab-content.show { display: block; }
+        
+        .section { margin-bottom: 30px; }
+        .section-title {
+            color: #1f4788;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #1f4788;
+        }
+        .marks { color: #666; font-size: 12px; margin-left: 10px; }
+        
+        /* LISTENING */
+        .youtube-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .youtube-container iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .listening-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .listening-info-item {
+            background: #f0f8ff;
+            padding: 12px;
+            border-radius: 6px;
+            border-left: 4px solid #667eea;
+            font-size: 13px;
+        }
+        .listening-info-label {
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .question-block {
+            background: #f9f9f9;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #667eea;
+        }
+        .question-text {
+            font-weight: 500;
+            margin-bottom: 12px;
+            color: #333;
+        }
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-left: 20px;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .option input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        .option label {
+            cursor: pointer;
+            flex: 1;
+        }
+        
+        /* WRITING */
+        .writing-container {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .writing-input-section {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .writing-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .voice-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .voice-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+        }
+        .voice-btn.recording {
+            background: linear-gradient(135deg, #f44336 0%, #da190b 100%);
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .voice-status {
+            font-size: 12px;
+            color: #666;
+            font-weight: normal;
+        }
+        
+        .word-count {
+            text-align: right;
+            color: #999;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        
+        /* PASSAGE */
+        .passage {
+            background: #f0f8ff;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+            border-left: 4px solid #20b2aa;
+            line-height: 1.8;
+            font-size: 14px;
+        }
+        .passage-title {
+            color: #1f4788;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        button {
+            padding: 12px 30px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        .btn-reset {
+            background: #ddd;
+            color: #333;
+        }
+        .btn-reset:hover { background: #ccc; }
+        
+        .success-message {
+            display: none;
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .listening-info { grid-template-columns: 1fr; }
+            .options { grid-template-columns: 1fr; }
+            .student-grid { grid-template-columns: 1fr; }
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="loginScreen">
+    <div class="login-card">
+        <h1>📚 DSE英语自适应学习</h1>
+        <p>选择学生账户开始学习</p>
+        
+        <div class="student-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+            <button class="student-btn son" onclick="login('son')">
+                👦 小六<br>
+                <span style="font-size: 12px; opacity: 0.9;">9年级 | Grade 2</span>
+            </button>
+            <button class="student-btn daughter" onclick="login('daughter')">
+                👧 小马<br>
+                <span style="font-size: 12px; opacity: 0.9;">5年级 | Grade 1</span>
+            </button>
+            <button class="student-btn" onclick="login('parent')" style="border-color: #4caf50; background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%); color: white;">
+                👨‍🏫 我<br>
+                <span style="font-size: 12px; opacity: 0.9;">教师账户</span>
+            </button>
+        </div>
+
+        <div class="login-info">
+            <strong>💡 账户说明：</strong><br>
+            • 每个账户独立记录学习进度<br>
+            • 自动保存测试答案和成绩<br>
+            • 支持语音输入（写作部分）<br>
+            • 可随时切换账户
+        </div>
+    </div>
+</div>
+
+<!-- MAIN SYSTEM -->
+<div class="container" id="mainSystem" style="display: none;">
+    <div class="header">
+        <div class="header-left">
+            <h1>🎓 DSE英语综合诊断测试</h1>
+            <p id="gradeInfo">包含听力、文法、阅读、写作 - 自适应难度版</p>
+        </div>
+        <div class="header-right">
+            <div class="user-badge" id="userBadge"></div>
+            <button class="logout-btn" onclick="logout()">🚪 切换账户</button>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="info-box">
+            <strong>📋 测试说明：</strong><br>
+            • 总时间：90分钟 • 总分：57分（听力15 + 文法15 + 阅读12 + 写作15）<br>
+            • 听力：BBC真实视频 + 自动调整难度<br>
+            • 写作：支持语音输入🎤（点击按钮开始录音）<br>
+            • 完成后提交答案，我会立即批改
+        </div>
+
+        <div class="timer" id="timer">⏱ 时间：90:00</div>
+
+        <div class="tabs">
+            <button type="button" class="tab-btn active" onclick="switchTab('listening')">🎧 听力 (15分)</button>
+            <button type="button" class="tab-btn" onclick="switchTab('grammar')">📝 文法词汇 (15分)</button>
+            <button type="button" class="tab-btn" onclick="switchTab('reading')">📖 阅读 (12分)</button>
+            <button type="button" class="tab-btn" onclick="switchTab('writing')">✍️ 写作 (15分)</button>
+        </div>
+
+        <form id="testForm">
+            <!-- LISTENING -->
+            <div class="tab-content show" id="listening">
+                <div class="section">
+                    <div class="section-title">SECTION 1: LISTENING <span class="marks">(15 marks)</span></div>
+                    <p style="margin-bottom: 15px; color: #666;">Watch the BBC video and answer the questions.</p>
+                    
+                    <div id="listeningVideoSection">
+                        <div class="listening-info">
+                            <div class="listening-info-item">
+                                <div class="listening-info-label">📺 Channel</div>
+                                <div id="channelInfo">-</div>
+                            </div>
+                            <div class="listening-info-item">
+                                <div class="listening-info-label">⏱ Duration</div>
+                                <div id="durationInfo">-</div>
+                            </div>
+                            <div class="listening-info-item">
+                                <div class="listening-info-label">📚 Topic</div>
+                                <div id="topicInfo">-</div>
+                            </div>
+                            <div class="listening-info-item">
+                                <div class="listening-info-label">🎯 Level</div>
+                                <div id="difficultyInfo">-</div>
+                            </div>
+                        </div>
+                        
+                        <div class="youtube-container">
+                            <iframe id="youtubePlayer" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+
+                        <div id="listeningQuestions"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GRAMMAR -->
+            <div class="tab-content" id="grammar">
+                <div class="section">
+                    <div class="section-title">SECTION 2: GRAMMAR & VOCABULARY <span class="marks">(15 marks)</span></div>
+                    <p style="margin-bottom: 15px; color: #666;">Choose the best option (A, B, C, or D) for each question.</p>
+                    <div id="grammarQuestions"></div>
+                </div>
+            </div>
+
+            <!-- READING -->
+            <div class="tab-content" id="reading">
+                <div class="section">
+                    <div class="section-title">SECTION 3: READING COMPREHENSION <span class="marks">(12 marks)</span></div>
+                    <p style="margin-bottom: 15px; color: #666;">Read the passages carefully and answer the questions.</p>
+                    <div id="readingQuestions"></div>
+                </div>
+            </div>
+
+            <!-- WRITING -->
+            <div class="tab-content" id="writing">
+                <div class="section">
+                    <div class="section-title">SECTION 4: WRITING <span class="marks">(15 marks)</span></div>
+                    <p style="margin-bottom: 15px; color: #666;">Write 200-250 words on ONE topic. (支持语音输入)</p>
+
+                    <div style="background: #e8f5e9; padding: 12px; margin: 10px 0; border-radius: 4px; border-left: 4px solid #4caf50; font-size: 13px;">
+                        <strong>Topic A:</strong> "Social media has more negative effects than positive effects on young people." Do you agree?
+                    </div>
+                    <div style="background: #e8f5e9; padding: 12px; margin: 10px 0; border-radius: 4px; border-left: 4px solid #4caf50; font-size: 13px;">
+                        <strong>Topic B:</strong> Discuss the importance of environmental protection and suggest three ways individuals can help.
+                    </div>
+                    <div style="background: #e8f5e9; padding: 12px; margin: 10px 0; border-radius: 4px; border-left: 4px solid #4caf50; font-size: 13px;">
+                        <strong>Topic C:</strong> "Technology is replacing human interaction." Discuss advantages and disadvantages.
+                    </div>
+
+                    <p style="margin: 15px 0; color: #666;">Choose ONE topic and write your essay:</p>
+                    
+                    <div class="writing-container">
+                        <div class="writing-input-section">
+                            <textarea id="essay" placeholder="Write your essay here... (approximately 200-250 words)"></textarea>
+                            <div class="writing-controls">
+                                <button type="button" class="voice-btn" id="voiceBtn" onclick="toggleVoiceInput()" title="Click to start/stop voice input">
+                                    🎤 语音输入
+                                    <span class="voice-status" id="voiceStatus"></span>
+                                </button>
+                                <span style="color: #999; font-size: 12px;">💡 提示：点击按钮开始说话，再点一次停止录音</span>
+                            </div>
+                            <div class="word-count"><span id="wordCount">0</span> words</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button type="reset" class="btn-reset">Clear Form</button>
+                <button type="button" class="btn-submit" onclick="submitTest()">Submit Answers</button>
+            </div>
+
+            <div class="success-message" id="successMessage">
+                ✅ 答案已提交！我会尽快批改，谢谢！
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// 多账户系统 - 内联脚本
+let currentUser = null;
+const users = {
+    son: { name: '小六', grade: '9年级 (Grade 2)', badge: '👦 小六 - 9年级' },
+    daughter: { name: '小马', grade: '5年级 (Grade 1)', badge: '👧 小马 - 5年级' },
+    parent: { name: '我', grade: '教师账户', badge: '👨‍🏫 我 - 教师账户' }
+};
+
+function login(userType) {
+    currentUser = userType;
+    const user = users[userType];
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('mainSystem').style.display = 'block';
+    document.getElementById('userBadge').textContent = user.badge;
+    document.getElementById('userBadge').className = `user-badge ${userType}-badge`;
+    document.getElementById('gradeInfo').textContent = `${user.name} - ${user.grade}`;
+    loadUserData();
+    initializeTest();
+    updateTimer();
+}
+
+function logout() {
+    if (confirm('确定要切换账户吗？当前进度会自动保存。')) {
+        if (currentUser) saveUserData();
+        currentUser = null;
+        document.getElementById('loginScreen').classList.remove('hidden');
+        document.getElementById('mainSystem').style.display = 'none';
+        document.getElementById('testForm').reset();
+        document.getElementById('wordCount').textContent = '0';
+        timeLeft = 5400;
+    }
+}
+
+function loadUserData() {
+    const userData = localStorage.getItem(`user_${currentUser}_test`);
+    if (userData) {
+        const data = JSON.parse(userData);
+        if (data.essay) {
+            document.getElementById('essay').value = data.essay;
+            updateWordCount();
+        }
+    }
+}
+
+function saveUserData() {
+    const userData = {
+        timestamp: new Date().toLocaleString('zh-CN'),
+        essay: document.getElementById('essay').value,
+        lastSaved: new Date().getTime()
+    };
+    localStorage.setItem(`user_${currentUser}_test`, JSON.stringify(userData));
+}
+
+// 语音输入系统
+let isListening = false;
+let recognition = null;
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+if (SpeechRecognition) {
+    recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    let interimTranscript = '';
+
+    recognition.onstart = function() {
+        isListening = true;
+        document.getElementById('voiceBtn').classList.add('recording');
+        document.getElementById('voiceStatus').textContent = '🎙️ 录音中...';
+    };
+
+    recognition.onresult = function(event) {
+        interimTranscript = '';
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+            const transcript = event.results[i].transcript;
+            if (event.results[i].isFinal) {
+                const textarea = document.getElementById('essay');
+                textarea.value += (textarea.value ? ' ' : '') + transcript;
+                updateWordCount();
+            } else {
+                interimTranscript += transcript;
+            }
+        }
+        if (interimTranscript) {
+            document.getElementById('voiceStatus').textContent = `识别中: ${interimTranscript.substring(0, 15)}...`;
+        }
+    };
+
+    recognition.onerror = function(event) {
+        document.getElementById('voiceStatus').textContent = `错误: ${event.error}`;
+    };
+
+    recognition.onend = function() {
+        isListening = false;
+        document.getElementById('voiceBtn').classList.remove('recording');
+        document.getElementById('voiceStatus').textContent = '✅ 完成';
+        setTimeout(() => { document.getElementById('voiceStatus').textContent = ''; }, 2000);
+    };
+}
+
+function toggleVoiceInput() {
+    if (!SpeechRecognition) {
+        alert('您的浏览器不支持语音输入。请使用Chrome、Edge或Firefox。');
+        return;
+    }
+    if (!isListening) recognition.start();
+    else recognition.stop();
+}
+
+// 视频库和题目数据
+const videoLibrary = {
+    level1: [{
+        youtubeId: "7XVPQ8kcoOE", title: "6 Minute English: Is the Internet Making us Unhappy?",
+        channel: "BBC Learning English", duration: "6:35", topic: "Technology & Mental Health",
+        difficulty: "Foundation",
+        questions: [
+            { question: "What is the main topic?", options: [
+                { text: "How to use internet safely", correct: false },
+                { text: "Internet use and happiness", correct: true },
+                { text: "Why social media is bad", correct: false },
+                { text: "Becoming a YouTuber", correct: false }
+            ]}
+        ]
+    }],
+    level2: [{
+        youtubeId: "xRsNLtMJzYE", title: "6 Minute English: Learning Languages",
+        channel: "BBC Learning English", duration: "6:15", topic: "Language Learning",
+        difficulty: "Developing",
+        questions: [{ question: "What is the main focus?", options: [
+            { text: "Grammar only", correct: false },
+            { text: "Improving pronunciation", correct: true },
+            { text: "Writing skills", correct: false },
+            { text: "New vocabulary", correct: false }
+        ]}]
+    }]
+};
+
+const grammarQuestions = [
+    { q: 1, text: "If I had known about the accident, I _____ my friend immediately.", options: ["would notify", "would have notified", "will notify", "have notified"], answer: "B" },
+    { q: 2, text: "Despite _____ hard all year, she didn't pass the exam.", options: ["studying", "to study", "study", "studied"], answer: "A" }
+];
+
+function switchTab(tab) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('show'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById(tab).classList.add('show');
+    event.target.classList.add('active');
+}
+
+function initializeTest() {
+    loadListeningContent(1);
+    updateWordCount();
+}
+
+function loadListeningContent(level) {
+    const videos = videoLibrary[`level${level}`];
+    const video = videos[0];
+    document.getElementById('channelInfo').textContent = video.channel;
+    document.getElementById('durationInfo').textContent = video.duration;
+    document.getElementById('topicInfo').textContent = video.topic;
+    document.getElementById('difficultyInfo').textContent = video.difficulty;
+    document.getElementById('youtubePlayer').src = `https://www.youtube.com/embed/${video.youtubeId}`;
+}
+
+let timeLeft = 5400;
+function updateTimer() {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    document.getElementById('timer').textContent = `⏱ 时间：${minutes}:${seconds.toString().padStart(2, '0')}`;
+    if (timeLeft > 0) {
+        timeLeft--;
+        setTimeout(updateTimer, 1000);
+    } else {
+        document.getElementById('timer').textContent = '⏱ 时间已到！';
+        document.getElementById('timer').style.color = '#f44336';
+    }
+}
+
+function updateWordCount() {
+    const text = document.getElementById('essay').value.trim();
+    const words = text ? text.split(/\s+/).length : 0;
+    document.getElementById('wordCount').textContent = words;
+}
+
+function submitTest() {
+    if (!currentUser) { alert('请先选择账户'); return; }
+    const data = {
+        timestamp: new Date().toLocaleString('zh-CN'),
+        student: currentUser,
+        essay: document.getElementById('essay').value
+    };
+    localStorage.setItem(`user_${currentUser}_submission`, JSON.stringify(data));
+    saveUserData();
+    document.getElementById('successMessage').style.display = 'block';
+    setTimeout(() => { document.getElementById('successMessage').style.display = 'none'; }, 3000);
+    alert(`✅ 答案已保存！学生：${users[currentUser].name}\n请告诉我已完成测试，我会立即批改。`);
+}
+
+document.getElementById('essay').addEventListener('input', updateWordCount);
+window.addEventListener('beforeunload', (e) => {
+    const hasAnswers = Object.values(document.querySelectorAll('input[type="radio"]:checked')).length > 0;
+    if (hasAnswers && currentUser) {
+        saveUserData();
+        e.preventDefault();
+        e.returnValue = '';
+    }
+});
+</script>
+</body>
+</html>

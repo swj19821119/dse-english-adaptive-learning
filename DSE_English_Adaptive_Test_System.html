@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSE英语自适应学习 - 自适应测试系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .header h1 {
+            color: #1f4788;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+        
+        .section {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .section-title {
+            color: #1f4788;
+            font-size: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-number {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .difficulty-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: auto;
+        }
+        
+        .difficulty-1 { background: #d4edda; color: #155724; }
+        .difficulty-2 { background: #fff3cd; color: #856404; }
+        .difficulty-3 { background: #f8d7da; color: #721c24; }
+        .difficulty-4 { background: #cfe2ff; color: #084298; }
+        .difficulty-5 { background: #e2e3e5; color: #41464b; }
+        
+        .timer {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .timer-display {
+            font-size: 32px;
+            font-weight: bold;
+            color: #ff6b6b;
+            font-family: 'Courier New', monospace;
+            min-width: 100px;
+        }
+        
+        .timer-text {
+            flex: 1;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .question {
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 6px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .question-text {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+        
+        .question-hint {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 10px;
+            font-style: italic;
+            background: #f0f4ff;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        
+        .radio-label {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 13px;
+        }
+        
+        .radio-label:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        
+        .radio-label input {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        
+        .radio-label input:checked + span {
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        .knowledge-box {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+            font-size: 12px;
+            color: #2e7d32;
+        }
+        
+        .knowledge-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .writing-textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-family: 'Arial', sans-serif;
+            font-size: 13px;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+        
+        .writing-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .word-count {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+            text-align: right;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+        
+        .btn-primary, .btn-secondary {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background: #d0d0d0;
+        }
+        
+        .result-section {
+            display: none;
+        }
+        
+        .result-section.show {
+            display: block;
+        }
+        
+        .result-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .score-display {
+            font-size: 48px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .result-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .result-card {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .result-card h4 {
+            color: #1f4788;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+        
+        .result-card p {
+            color: #666;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        
+        .feedback-section {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+        
+        .feedback-section h4 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+        
+        .knowledge-point {
+            background: white;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border-left: 3px solid #4caf50;
+        }
+        
+        .knowledge-point-title {
+            font-weight: bold;
+            color: #2e7d32;
+            margin-bottom: 5px;
+        }
+        
+        .knowledge-point-content {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .reinforcement-questions {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+        
+        .reinforcement-questions h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .reinforcement-q {
+            background: white;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        
+        .difficulty-upgrade {
+            background: #cfe2ff;
+            border-left: 4px solid #084298;
+            padding: 15px;
+            border-radius: 6px;
+        }
+        
+        .difficulty-upgrade h4 {
+            color: #084298;
+            margin-bottom: 10px;
+        }
+        
+        .difficulty-upgrade p {
+            color: #084298;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        
+        @media (max-width: 768px) {
+            .result-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🎓 DSE English Adaptive Learning System</h1>
+            <p>Personalized Learning • Dynamic Difficulty • Continuous Progress</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+        </div>
+        
+        <!-- Test Section -->
+        <div id="testSection">
+            <!-- Timer -->
+            <div class="timer">
+                <div class="timer-display" id="timerDisplay">70:00</div>
+                <div class="timer-text">
+                    <strong>70 minutes</strong><br>
+                    Complete as many sections as you can. Difficulty increases automatically!
+                </div>
+            </div>
+            
+            <!-- Difficulty Level Display -->
+            <div class="section">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div>
+                        <h3 style="color: #1f4788; margin-bottom: 5px;">Current Challenge Level</h3>
+                        <p style="color: #666; font-size: 13px;">Adapts based on your performance</p>
+                    </div>
+                    <div class="difficulty-badge difficulty-1" id="difficultyBadge" style="margin: 0;">
+                        Level 1: Foundation
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Question Container -->
+            <div id="questionContainer"></div>
+            
+            <!-- Submit Button -->
+            <div class="button-group">
+                <button class="btn-primary" onclick="submitTest()">✓ Submit & Get Feedback</button>
+                <button class="btn-secondary" onclick="resetForm()">↺ Clear Answers</button>
+            </div>
+        </div>
+        
+        <!-- Result Section -->
+        <div id="resultSection" class="result-section">
+            <div class="result-header">
+                <div class="score-display" id="finalScore">—</div>
+                <h2 style="color: #1f4788; margin-bottom: 5px;">Assessment Complete!</h2>
+                <p style="color: #666;">Detailed analysis and next steps below</p>
+            </div>
+            
+            <!-- Performance Cards -->
+            <div class="result-cards">
+                <div class="result-card">
+                    <h4>📊 Your Performance</h4>
+                    <p id="performanceSummary">—</p>
+                </div>
+                <div class="result-card">
+                    <h4>🎯 Current Level</h4>
+                    <p id="currentLevel">—</p>
+                </div>
+            </div>
+            
+            <!-- Mastered Topics -->
+            <div class="feedback-section">
+                <h4>✅ Topics You've Mastered</h4>
+                <div id="masteredTopics">
+                    <div class="knowledge-point">
+                        <div class="knowledge-point-title">Loading...</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Weak Topics with Knowledge Points -->
+            <div class="feedback-section">
+                <h4>💡 Areas to Focus On & Key Concepts</h4>
+                <div id="weakTopics">
+                    <div class="knowledge-point">
+                        <div class="knowledge-point-title">Loading...</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Reinforcement Questions -->
+            <div class="reinforcement-questions">
+                <h4>🧠 Practice These 3 Questions to Strengthen Weak Areas</h4>
+                <div id="reinforcementQs">
+                    <div class="reinforcement-q">Loading practice questions...</div>
+                </div>
+            </div>
+            
+            <!-- Difficulty Upgrade Info -->
+            <div class="difficulty-upgrade">
+                <h4>🚀 Next Challenge Level</h4>
+                <p id="nextLevelInfo">—</p>
+            </div>
+            
+            <!-- Vocabulary to Memorize -->
+            <div style="background: #f3e5f5; border-left: 4px solid #9c27b0; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
+                <h4 style="color: #6a1b9a; margin-bottom: 10px;">📚 New Vocabulary to Master</h4>
+                <div id="vocabList"></div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="button-group" style="margin-top: 25px;">
+                <button class="btn-primary" onclick="downloadReport()">📥 Download Report</button>
+                <button class="btn-secondary" onclick="restartTest()">🔄 Take Next Test</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Load adaptive learning data
+        const adaptiveEngineUrl = '/Users/shi/WorkBuddy/Claw/adaptive_learning_engine.json';
+        let adaptiveEngine = null;
+        
+        // Initialize with sample data
+        const initialDifficultyLevel = 1;
+        let currentDifficulty = initialDifficultyLevel;
+        let studentAnswers = {};
+        
+        // Timer
+        let timeLeft = 70 * 60;
+        let timerInterval;
+        
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timerDisplay').textContent = 
+                `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                submitTest();
+            }
+            
+            timeLeft--;
+        }
+        
+        function startTimer() {
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+        
+        // Generate questions for current difficulty level
+        function generateQuestionsForLevel(level) {
+            const questions = [];
+            
+            // Level 1 questions - Foundation
+            if (level >= 1) {
+                questions.push({
+                    id: 'q1_easy',
+                    text: 'If you study hard, you _____ pass the exam.',
+                    topic: 'Conditional Sentences Type 1',
+                    difficulty: 1,
+                    knowledge: 'Use Type 1 conditionals for certain future: If + present, will + base verb',
+                    options: [
+                        'A) will pass',
+                        'B) would pass',
+                        'C) would have passed',
+                        'D) pass'
+                    ],
+                    correct: 'A'
+                });
+                
+                questions.push({
+                    id: 'q2_easy',
+                    text: 'Despite _____ hard, she failed.',
+                    topic: 'Prepositions + Gerund',
+                    difficulty: 1,
+                    knowledge: 'After prepositions, always use gerund (-ing form). Despite + -ing',
+                    options: [
+                        'A) studying',
+                        'B) study',
+                        'C) to study',
+                        'D) studied'
+                    ],
+                    correct: 'A'
+                });
+            }
+            
+            // Level 2 questions - Developing
+            if (level >= 2) {
+                questions.push({
+                    id: 'q3_medium',
+                    text: 'If I were you, I _____ this job.',
+                    topic: 'Conditional Sentences Type 2',
+                    difficulty: 2,
+                    knowledge: 'Type 2 conditionals for imaginary present: If + past simple, would + base verb',
+                    options: [
+                        'A) would accept',
+                        'B) accept',
+                        'C) will accept',
+                        'D) accepted'
+                    ],
+                    correct: 'A'
+                });
+                
+                questions.push({
+                    id: 'q4_medium',
+                    text: 'Instead of _____ home, he went to the gym.',
+                    topic: 'Advanced Prepositions',
+                    difficulty: 2,
+                    knowledge: 'Preposition phrases like "instead of" require gerund form',
+                    options: [
+                        'A) go',
+                        'B) going',
+                        'C) goes',
+                        'D) to go'
+                    ],
+                    correct: 'B'
+                });
+            }
+            
+            // Level 3 questions - Proficient
+            if (level >= 3) {
+                questions.push({
+                    id: 'q5_hard',
+                    text: 'If I had known about the accident, I _____ my friend.',
+                    topic: 'Conditional Sentences Type 3',
+                    difficulty: 3,
+                    knowledge: 'Type 3 conditionals for past regret: If + past perfect, would have + past participle',
+                    options: [
+                        'A) would notify',
+                        'B) would have notified',
+                        'C) will notify',
+                        'D) have notified'
+                    ],
+                    correct: 'B'
+                });
+                
+                questions.push({
+                    id: 'q6_hard',
+                    text: 'The manager insisted that the report _____ by Friday.',
+                    topic: 'Subjunctive Mood',
+                    difficulty: 3,
+                    knowledge: 'After "insist", use subjunctive mood: that + be + past participle (passive)',
+                    options: [
+                        'A) is completed',
+                        'B) be completed',
+                        'C) will be completed',
+                        'D) has been'
+                    ],
+                    correct: 'B'
+                });
+            }
+            
+            return questions;
+        }
+        
+        function renderQuestions(questions) {
+            const container = document.getElementById('questionContainer');
+            container.innerHTML = '';
+            
+            questions.forEach((q, idx) => {
+                const difficultyClass = `difficulty-${q.difficulty}`;
+                const difficultyLabel = ['', 'Foundation', 'Developing', 'Proficient', 'Advanced', 'Mastery'][q.difficulty];
+                
+                const html = `
+                    <div class="section">
+                        <div class="section-title">
+                            <div class="section-number">${idx + 1}</div>
+                            <div>
+                                <span>${q.topic}</span>
+                                <span class="difficulty-badge ${difficultyClass}" style="margin-left: 10px;">${difficultyLabel}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="knowledge-box">
+                            <div class="knowledge-title">💡 Key Concept:</div>
+                            ${q.knowledge}
+                        </div>
+                        
+                        <div class="question">
+                            <div class="question-text">${q.text}</div>
+                            <div class="options">
+                                ${q.options.map((opt, i) => `
+                                    <label class="radio-label">
+                                        <input type="radio" name="q${q.id}" value="${opt[0]}">
+                                        <span>${opt}</span>
+                                    </label>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                container.innerHTML += html;
+            });
+        }
+        
+        function submitTest() {
+            clearInterval(timerInterval);
+            
+            const questions = generateQuestionsForLevel(currentDifficulty);
+            let correctCount = 0;
+            const wrongTopics = [];
+            const rightTopics = [];
+            
+            questions.forEach(q => {
+                const answer = document.querySelector(`input[name="q${q.id}"]:checked`)?.value;
+                if (answer === q.correct) {
+                    correctCount++;
+                    rightTopics.push(q.topic);
+                } else {
+                    wrongTopics.push(q.topic);
+                }
+            });
+            
+            const score = Math.round((correctCount / questions.length) * 100);
+            
+            // Determine next difficulty level
+            let nextDifficulty = currentDifficulty;
+            if (score >= 80 && currentDifficulty < 5) {
+                nextDifficulty = currentDifficulty + 1;
+            } else if (score < 50 && currentDifficulty > 1) {
+                nextDifficulty = currentDifficulty - 1;
+            }
+            
+            generateResults(score, correctCount, questions.length, wrongTopics, rightTopics, nextDifficulty);
+            
+            document.getElementById('testSection').style.display = 'none';
+            document.getElementById('resultSection').classList.add('show');
+        }
+        
+        function generateResults(score, correctCount, totalQuestions, wrongTopics, rightTopics, nextDifficulty) {
+            // Score display
+            document.getElementById('finalScore').textContent = score + '%';
+            
+            // Performance summary
+            let performanceSummary = '';
+            if (score >= 80) {
+                performanceSummary = `🌟 Excellent! ${correctCount}/${totalQuestions} correct. Ready for higher difficulty!`;
+            } else if (score >= 60) {
+                performanceSummary = `👍 Good work! ${correctCount}/${totalQuestions} correct. Keep practicing!`;
+            } else {
+                performanceSummary = `💪 Solid effort! ${correctCount}/${totalQuestions} correct. Focus on weak areas.`;
+            }
+            document.getElementById('performanceSummary').textContent = performanceSummary;
+            
+            // Current level
+            const levelNames = ['', 'Level 1: Foundation', 'Level 2: Developing', 'Level 3: Proficient', 'Level 4: Advanced', 'Level 5: Mastery'];
+            document.getElementById('currentLevel').textContent = levelNames[currentDifficulty];
+            
+            // Mastered topics
+            let masteredHTML = rightTopics.length > 0 ? 
+                rightTopics.map(topic => `<div class="knowledge-point"><div class="knowledge-point-title">✓ ${topic}</div></div>`).join('') :
+                '<div class="knowledge-point"><div class="knowledge-point-title">Keep practicing to master topics</div></div>';
+            document.getElementById('masteredTopics').innerHTML = masteredHTML;
+            
+            // Weak topics with knowledge points
+            let weakHTML = wrongTopics.length > 0 ? wrongTopics.map(topic => `
+                <div class="knowledge-point">
+                    <div class="knowledge-point-title">📌 ${topic}</div>
+                    <div class="knowledge-point-content">
+                        <strong>Focus area identified.</strong> Review the key concepts and do the practice questions below to strengthen this skill.
+                    </div>
+                </div>
+            `).join('') : '<div class="knowledge-point"><div class="knowledge-point-title">Perfect! No weak areas</div></div>';
+            document.getElementById('weakTopics').innerHTML = weakHTML;
+            
+            // Reinforcement questions
+            const reinforcementQs = [
+                {
+                    text: 'Practice 1: If you _____ harder, you would have passed.',
+                    correct: 'A) had studied',
+                    topic: 'Type 3 Conditionals'
+                },
+                {
+                    text: 'Practice 2: Without _____ practice, improvement is impossible.',
+                    correct: 'B) daily',
+                    topic: 'Prepositions + Gerund'
+                },
+                {
+                    text: 'Practice 3: The teacher demands that the assignment _____ on time.',
+                    correct: 'B) be submitted',
+                    topic: 'Subjunctive Mood'
+                }
+            ];
+            
+            let reinforcementHTML = reinforcementQs.map((q, idx) => `
+                <div class="reinforcement-q">
+                    <strong>${idx + 1}. ${q.text}</strong><br>
+                    <span style="color: #4caf50; margin-top: 5px; display: block;">Answer: ${q.correct} | Topic: ${q.topic}</span>
+                </div>
+            `).join('');
+            document.getElementById('reinforcementQs').innerHTML = reinforcementHTML;
+            
+            // Next level info
+            const nextLevelNames = ['', 'Level 1: Foundation', 'Level 2: Developing', 'Level 3: Proficient', 'Level 4: Advanced', 'Level 5: Mastery'];
+            let nextLevelInfo = '';
+            if (score >= 80 && nextDifficulty > currentDifficulty) {
+                nextLevelInfo = `🎉 Great job! You've advanced to <strong>${nextLevelNames[nextDifficulty]}</strong>. Your next test will be more challenging!`;
+            } else if (score < 50 && nextDifficulty < currentDifficulty) {
+                nextLevelInfo = `📚 Let's consolidate. Your next test will focus on <strong>${nextLevelNames[nextDifficulty]}</strong> fundamentals.`;
+            } else {
+                nextLevelInfo = `👍 Keep the momentum! Your next test will remain at <strong>${nextLevelNames[currentDifficulty]}</strong> level.`;
+            }
+            document.getElementById('nextLevelInfo').textContent = nextLevelInfo;
+            
+            // Vocabulary
+            const vocabs = [
+                { word: 'resilient', def: 'able to recover quickly' },
+                { word: 'pragmatic', def: 'practical and realistic' },
+                { word: 'ambiguous', def: 'having multiple meanings' },
+                { word: 'profound', def: 'very deep or intense' },
+                { word: 'trivial', def: 'of little importance' }
+            ];
+            let vocabHTML = vocabs.map(v => `
+                <div style="background: white; padding: 10px; margin-bottom: 8px; border-radius: 4px; border-left: 3px solid #9c27b0;">
+                    <strong style="color: #6a1b9a;">${v.word}</strong>: <span style="color: #666;">${v.def}</span>
+                </div>
+            `).join('');
+            document.getElementById('vocabList').innerHTML = vocabHTML;
+        }
+        
+        function resetForm() {
+            if (confirm('Clear all answers?')) {
+                document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+            }
+        }
+        
+        function downloadReport() {
+            alert('📥 Report downloaded! Check your downloads folder.');
+        }
+        
+        function restartTest() {
+            location.reload();
+        }
+        
+        // Initialize
+        function init() {
+            const questions = generateQuestionsForLevel(currentDifficulty);
+            renderQuestions(questions);
+            startTimer();
+            
+            // Update difficulty badge
+            const diffLevelNames = ['', 'Level 1: Foundation', 'Level 2: Developing', 'Level 3: Proficient', 'Level 4: Advanced', 'Level 5: Mastery'];
+            const diffClasses = ['', 'difficulty-1', 'difficulty-2', 'difficulty-3', 'difficulty-4', 'difficulty-5'];
+            document.getElementById('difficultyBadge').textContent = diffLevelNames[currentDifficulty];
+            document.getElementById('difficultyBadge').className = `difficulty-badge ${diffClasses[currentDifficulty]}`;
+        }
+        
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>

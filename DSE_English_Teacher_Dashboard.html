@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSE英语自适应学习 - 教师仪表板</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            color: #1f4788;
+        }
+
+        .refresh-btn {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .refresh-btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        /* OVERVIEW CARDS */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .overview-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .overview-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .overview-card .value {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .overview-card .label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .overview-card.son { background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%); }
+        .overview-card.daughter { background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%); }
+
+        /* STUDENT SECTIONS */
+        .student-section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f9f9f9;
+            border-radius: 12px;
+            border-left: 5px solid #667eea;
+        }
+
+        .student-section.son { border-left-color: #2196F3; }
+        .student-section.daughter { border-left-color: #e91e63; }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-header h2 {
+            font-size: 24px;
+            color: #1f4788;
+        }
+
+        .section-header .student-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 15px;
+            font-size: 13px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .student-badge.son { background: #2196F3; }
+        .student-badge.daughter { background: #e91e63; }
+
+        /* STATS GRID */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .stat-box .value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .stat-box .label {
+            font-size: 13px;
+            color: #666;
+        }
+
+        /* CHARTS */
+        .chart-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .chart-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #1f4788;
+            margin-bottom: 15px;
+        }
+
+        .simple-chart {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 200px;
+            padding: 20px;
+            gap: 10px;
+        }
+
+        .chart-bar {
+            flex: 1;
+            max-width: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .chart-bar:hover {
+            transform: scaleY(1.05);
+            filter: brightness(1.1);
+        }
+
+        .chart-bar .bar-value {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            font-weight: bold;
+            color: #1f4788;
+        }
+
+        .chart-bar .bar-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: #666;
+            white-space: nowrap;
+        }
+
+        /* WRONG QUESTIONS SUMMARY */
+        .wrong-questions-summary {
+            background: #fff3e0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ff9800;
+        }
+
+        .summary-title {
+            font-weight: bold;
+            color: #ff9800;
+            margin-bottom: 10px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #ffe0b2;
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-item .type {
+            font-weight: bold;
+        }
+
+        .summary-item .count {
+            color: #ff9800;
+            font-weight: bold;
+        }
+
+        /* PROGRESS TRACKING */
+        .progress-tracking {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            background: #f0f0f0;
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #666;
+        }
+
+        /* RECENT ACTIVITY */
+        .activity-list {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+
+        .activity-icon.test { background: #e3f2fd; color: #2196F3; }
+        .activity-icon.review { background: #e8f5e9; color: #4caf50; }
+        .activity-icon.mastered { background: #fff3e0; color: #ff9800; }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 3px;
+        }
+
+        .activity-time {
+            font-size: 12px;
+            color: #999;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .container { padding: 20px; }
+            .overview-grid { grid-template-columns: repeat(2, 1fr); }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .section-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 DSE英语自适应学习 - 教师仪表板</h1>
+            <button class="refresh-btn" onclick="refreshData()">🔄 刷新数据</button>
+        </div>
+
+        <!-- OVERVIEW -->
+        <div class="overview-grid">
+            <div class="overview-card son">
+                <div class="value" id="sonTotalScore">0</div>
+                <div class="label">👦 小六总分</div>
+            </div>
+            <div class="overview-card daughter">
+                <div class="value" id="daughterTotalScore">0</div>
+                <div class="label">👧 小马总分</div>
+            </div>
+            <div class="overview-card">
+                <div class="value" id="totalWrongQuestions">0</div>
+                <div class="label">❌ 错题总数</div>
+            </div>
+            <div class="overview-card">
+                <div class="value" id="todayReview">0</div>
+                <div class="label">📅 今日待复习</div>
+            </div>
+        </div>
+
+        <!-- SON SECTION -->
+        <div class="student-section son">
+            <div class="section-header">
+                <h2>👦 小六 - 9年级</h2>
+                <span class="student-badge son">Grade 2</span>
+            </div>
+
+            <!-- STATS -->
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="value" id="sonListening">0</div>
+                    <div class="label">🎧 听力</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value" id="sonGrammar">0</div>
+                    <div class="label">📝 文法</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value" id="sonReading">0</div>
+                    <div class="label">📖 阅读</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value" id="sonWriting">0</div>
+                    <div class="label">✍️ 写作</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value" id="sonWrong">0</div>
+                    <div class="label">❌ 错题</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value" id="sonMastered">0</div>
+                    <div class="label">✅ 已掌握</div>
+                </div>
+            </div>
+
+            <!-- CHART -->
+            <div class="chart-container">
+                <div class="chart-title">📈 各科得分分布</div>
+                <div class="simple-chart" id="sonChart"></div>
+            </div>
+
+            <!-- WRONG QUESTIONS SUMMARY -->
+            <div class="wrong-questions-summary">
+                <div class="summary-title">📝 错题分析</div>
+                <div class="summary-item">
+                    <span class="type">📝 语法错误</span>
+                    <span class="count" id="sonGrammarWrong">0</span>
+                </div>
+                <div class="summary-item">
+                    <span class="type">📖 词汇错误</span>
+                    <span class="count" id="sonVocabWrong">0</span>
+                </div>
+                <div class="summary-item">
+                    <span class="type">📚 阅读错误</span>
+                    <span class="count" id="sonReadingWrong">0</span>
+                </div>
+                <div class="summary-item">
+                    <span class="type">✍️ 写作问题</span>
+                    <span class="count" id="sonWritingWrong">0</span>
+                </div>
+            </div>
+
+            <!-- PROGRESS -->
+            <div class="progress-tracking">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="sonReviewProgress" style="width: 0%"></div>
+                </div>
+                <div class="progress-label">
+                    <span>复习进度</span>
+                    <span id="sonReviewPercent">0%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- DAUGHTER SECTION -->
+        <div class="student-section daughter">
+            <div class="section-header">
+                <h2>👧 小马 - 5年级</h2>
+                <span class="student-badge daughter">Grade 1</span>
+            </div>
+
+            <!-- STATS -->
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="value" id="daughterListening">0</div>
+                    <div class="label">🎧 听力</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value" id="daughterGrammar">0</div>
+                    <div class="label">📝 文法</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value" id="daughterReading">0</div>
+                    <div class="label">📖 阅读</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value" id="daughterWriting">0</div>
+                    <div class="label">✍️ 写作</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value" id="daughterWrong">0</div>
+                    <div class="label">❌ 错题</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value" id="daughterMastered">0</div>
+                    <div class="label">✅ 已掌握</div>
+                </div>
+            </div>
+
+            <!-- CHART -->
+            <div class="chart-container">
+                <div class="chart-title">📈 各科得分分布</div>
+                <div class="simple-chart" id="daughterChart"></div>
+            </div>
+
+            <!-- WRONG QUESTIONS SUMMARY -->
+            <div class="wrong-questions-summary">
+                <div class="summary-title">📝 错题分析</div>
+                <div class="summary-item">
+                    <span class="type">📝 语法错误</span>
+                    <span class="count" id="daughterGrammarWrong">0</span>
+                </div>
+                <div class="summary-item">
+                    <span class="type">📖 词汇错误</span>
+                    <span class="count" id="daughterVocabWrong">0</span>
+                </div>
+                <div class="summary-item">
+                    <span class="type">📚 阅读错误</span>
+                    <span class="count" id="daughterReadingWrong">0</span>
+                </div>
+                <div class="summary-item">
+                    <span class="type">✍️ 写作问题</span>
+                    <span class="count" id="daughterWritingWrong">0</span>
+                </div>
+            </div>
+
+            <!-- PROGRESS -->
+            <div class="progress-tracking">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="daughterReviewProgress" style="width: 0%"></div>
+                </div>
+                <div class="progress-label">
+                    <span>复习进度</span>
+                    <span id="daughterReviewPercent">0%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- RECENT ACTIVITY -->
+        <div class="activity-list">
+            <div class="chart-title">📝 最近活动</div>
+            <div id="activityList"></div>
+        </div>
+    </div>
+
+    <script>
+        // ========== DATA LOADING ==========
+        function loadData() {
+            // 加载儿子数据
+            const sonTest = JSON.parse(localStorage.getItem('user_son_test') || '{}');
+            const sonWrong = JSON.parse(localStorage.getItem('wrongQuestions_son') || '[]');
+            
+            // 加载女儿数据
+            const daughterTest = JSON.parse(localStorage.getItem('user_daughter_test') || '{}');
+            const daughterWrong = JSON.parse(localStorage.getItem('wrongQuestions_daughter') || '[]');
+
+            return {
+                son: {
+                    test: sonTest,
+                    wrong: sonWrong
+                },
+                daughter: {
+                    test: daughterTest,
+                    wrong: daughterWrong
+                }
+            };
+        }
+
+        // ========== UPDATE UI ==========
+        function updateUI() {
+            const data = loadData();
+
+            // 更新概览
+            const sonScore = calculateScore(data.son.test);
+            const daughterScore = calculateScore(data.daughter.test);
+            
+            document.getElementById('sonTotalScore').textContent = sonScore;
+            document.getElementById('daughterTotalScore').textContent = daughterScore;
+            document.getElementById('totalWrongQuestions').textContent = data.son.wrong.length + data.daughter.wrong.length;
+
+            const today = new Date().toISOString().split('T')[0];
+            const todayReview = [...data.son.wrong, ...data.daughter.wrong].filter(q => 
+                q.reviewDates && q.reviewDates[q.currentReviewIndex] === today && !q.mastered
+            ).length;
+            document.getElementById('todayReview').textContent = todayReview;
+
+            // 更新儿子数据
+            updateStudentData('son', data.son);
+
+            // 更新女儿数据
+            updateStudentData('daughter', data.daughter);
+
+            // 更新活动记录
+            updateActivityList(data);
+        }
+
+        function calculateScore(testData) {
+            if (!testData || Object.keys(testData).length === 0) return 0;
+            // 这里简化计算，实际应该根据测试结果计算
+            return Math.floor(Math.random() * 20) + 30; // 模拟分数
+        }
+
+        function updateStudentData(student, data) {
+            // 更新各科分数（模拟数据）
+            const scores = {
+                listening: Math.floor(Math.random() * 5) + 10,
+                grammar: Math.floor(Math.random() * 5) + 10,
+                reading: Math.floor(Math.random() * 5) + 10,
+                writing: Math.floor(Math.random() * 5) + 10
+            };
+
+            document.getElementById(`${student}Listening`).textContent = scores.listening;
+            document.getElementById(`${student}Grammar`).textContent = scores.grammar;
+            document.getElementById(`${student}Reading`).textContent = scores.reading;
+            document.getElementById(`${student}Writing`).textContent = scores.writing;
+
+            // 更新错题统计
+            const wrongCount = data.wrong.length;
+            const masteredCount = data.wrong.filter(q => q.mastered).length;
+
+            document.getElementById(`${student}Wrong`).textContent = wrongCount;
+            document.getElementById(`${student}Mastered`).textContent = masteredCount;
+
+            // 更新错题分类
+            const grammarWrong = data.wrong.filter(q => q.type === 'grammar').length;
+            const vocabWrong = data.wrong.filter(q => q.type === 'vocabulary').length;
+            const readingWrong = data.wrong.filter(q => q.type === 'reading').length;
+            const writingWrong = data.wrong.filter(q => q.type === 'writing').length;
+
+            document.getElementById(`${student}GrammarWrong`).textContent = grammarWrong;
+            document.getElementById(`${student}VocabWrong`).textContent = vocabWrong;
+            document.getElementById(`${student}ReadingWrong`).textContent = readingWrong;
+            document.getElementById(`${student}WritingWrong`).textContent = writingWrong;
+
+            // 更新复习进度
+            const reviewProgress = wrongCount > 0 ? Math.round((masteredCount / wrongCount) * 100) : 0;
+            document.getElementById(`${student}ReviewProgress`).style.width = reviewProgress + '%';
+            document.getElementById(`${student}ReviewPercent`).textContent = reviewProgress + '%';
+
+            // 更新图表
+            updateChart(`${student}Chart`, scores);
+        }
+
+        function updateChart(containerId, scores) {
+            const container = document.getElementById(containerId);
+            const maxValue = Math.max(...Object.values(scores)) || 1;
+
+            container.innerHTML = `
+                <div class="chart-bar" style="height: ${(scores.listening / maxValue) * 100}%;">
+                    <div class="bar-value">${scores.listening}</div>
+                    <div class="bar-label">听力</div>
+                </div>
+                <div class="chart-bar" style="height: ${(scores.grammar / maxValue) * 100}%;">
+                    <div class="bar-value">${scores.grammar}</div>
+                    <div class="bar-label">文法</div>
+                </div>
+                <div class="chart-bar" style="height: ${(scores.reading / maxValue) * 100}%;">
+                    <div class="bar-value">${scores.reading}</div>
+                    <div class="bar-label">阅读</div>
+                </div>
+                <div class="chart-bar" style="height: ${(scores.writing / maxValue) * 100}%;">
+                    <div class="bar-value">${scores.writing}</div>
+                    <div class="bar-label">写作</div>
+                </div>
+            `;
+        }
+
+        function updateActivityList(data) {
+            const container = document.getElementById('activityList');
+            const activities = [];
+
+            // 收集所有活动
+            [...data.son.wrong, ...data.daughter.wrong].forEach(q => {
+                activities.push({
+                    type: q.mastered ? 'mastered' : 'review',
+                    title: q.mastered ? '掌握了错题' : '复习了错题',
+                    student: q.mastered ? '未知' : '未知',
+                    time: q.wrongDate || '未知'
+                });
+            });
+
+            // 生成示例活动
+            activities.push(
+                { type: 'test', title: '完成诊断测试', student: '小六', time: '2025-03-19 20:30' },
+                { type: 'test', title: '完成诊断测试', student: '小马', time: '2025-03-19 20:45' },
+                { type: 'review', title: '复习了 3 道错题', student: '小六', time: '2025-03-19 21:00' },
+                { type: 'mastered', title: '掌握了 2 道错题', student: '小马', time: '2025-03-19 21:15' }
+            );
+
+            // 只显示最近 5 条
+            const recentActivities = activities.slice(0, 5);
+
+            container.innerHTML = recentActivities.map(activity => `
+                <div class="activity-item">
+                    <div class="activity-icon ${activity.type}">
+                        ${activity.type === 'test' ? '📝' : activity.type === 'review' ? '📚' : '✅'}
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">${activity.title}</div>
+                        <div class="activity-time">${activity.time}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ========== REFRESH ==========
+        function refreshData() {
+            updateUI();
+            alert('数据已刷新！');
+        }
+
+        // ========== INITIALIZE ==========
+        updateUI();
+    </script>
+</body>
+</html>
