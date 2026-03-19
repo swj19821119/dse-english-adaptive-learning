@@ -425,6 +425,7 @@
         </div>
         <div class="header-right">
             <div class="user-badge" id="userBadge"></div>
+            <button class="logout-btn" onclick="window.location.href='DSE_English_Teacher_Dashboard.html'">📊 仪表板</button>
             <button class="logout-btn" onclick="logout()">🚪 切换账户</button>
         </div>
     </div>
@@ -551,9 +552,9 @@
 // 多账户系统 - 内联脚本
 let currentUser = null;
 const users = {
-    son: { name: '小六', grade: '9年级 (Grade 2)', badge: '👦 小六 - 9年级' },
-    daughter: { name: '小马', grade: '5年级 (Grade 1)', badge: '👧 小马 - 5年级' },
-    parent: { name: '我', grade: '教师账户', badge: '👨‍🏫 我 - 教师账户' }
+    son: { name: '小六', grade: '9年级', badge: '👦 小六' },
+    daughter: { name: '小马', grade: '5年级', badge: '👧 小马' },
+    parent: { name: '我', grade: '教师账户', badge: '👨‍🏫 我' }
 };
 
 function login(userType) {
@@ -653,6 +654,17 @@ function toggleVoiceInput() {
         alert('您的浏览器不支持语音输入。请使用Chrome、Edge或Firefox。');
         return;
     }
+
+    const voiceBtn = document.getElementById('voiceBtn');
+    const voiceStatus = document.getElementById('voiceStatus');
+    const essayTextarea = document.getElementById('essay');
+
+    if (!voiceBtn || !voiceStatus || !essayTextarea) {
+        console.error('语音输入元素未找到');
+        alert('语音输入组件加载失败,请刷新页面重试。');
+        return;
+    }
+    }
     if (!isListening) recognition.start();
     else recognition.stop();
 }
@@ -710,6 +722,93 @@ function loadListeningContent(level) {
     document.getElementById('topicInfo').textContent = video.topic;
     document.getElementById('difficultyInfo').textContent = video.difficulty;
     document.getElementById('youtubePlayer').src = `https://www.youtube.com/embed/${video.youtubeId}`;
+
+    // 显示听力题目
+    const container = document.getElementById('listeningQuestions');
+    container.innerHTML = video.questions.map((q, index) => `
+        <div class="question-block">
+            <div class="question-text"><strong>Q${index + 1}:</strong> ${q.question}</div>
+            <div class="options-grid">
+                ${q.options.map((opt, optIndex) => `
+                    <div class="option-item">
+                        <input type="radio" name="listening_${index}" id="listening_${index}_${optIndex}" value="${optIndex}">
+                        <label for="listening_${index}_${optIndex}">${String.fromCharCode(65 + optIndex)}. ${opt.text}</label>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `).join('');
+
+    // 显示文法题目
+    loadGrammarQuestions();
+
+    // 显示阅读题目
+    loadReadingQuestions();
+}
+
+function loadGrammarQuestions() {
+    const container = document.getElementById('grammarQuestions');
+    container.innerHTML = grammarQuestions.map((q, index) => `
+        <div class="question-block">
+            <div class="question-text"><strong>Q${q.q}:</strong> ${q.text}</div>
+            <div class="options-grid">
+                ${q.options.map((opt, optIndex) => `
+                    <div class="option-item">
+                        <input type="radio" name="grammar_${index}" id="grammar_${index}_${optIndex}" value="${String.fromCharCode(65 + optIndex)}">
+                        <label for="grammar_${index}_${optIndex}">${String.fromCharCode(65 + optIndex)}. ${opt}</label>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `).join('');
+}
+
+function loadReadingQuestions() {
+    const container = document.getElementById('readingQuestions');
+    const readingPassage = {
+        title: "The Impact of Artificial Intelligence on Education",
+        content: `Artificial Intelligence (AI) is transforming education in unprecedented ways. From personalized learning platforms to automated grading systems, AI is reshaping how students learn and teachers teach.
+
+One significant benefit is the ability to provide individualized learning experiences. AI-powered systems can analyze student performance and adapt content to match each learner's pace and level. This helps struggling students catch up while allowing advanced students to progress faster.
+
+However, concerns remain about data privacy and the potential loss of human interaction in education. Critics argue that while technology enhances learning, it cannot replace the emotional support and guidance that teachers provide.
+
+Despite these concerns, the future of AI in education looks promising. As technology continues to evolve, the key will be finding the right balance between technological innovation and traditional teaching methods.`,
+        questions: [
+            { question: "What is the main topic of the passage?", options: [
+                { text: "The history of education", correct: false },
+                { text: "AI's impact on education", correct: true },
+                { text: "How to become a teacher", correct: false },
+                { text: "Data privacy laws", correct: false }
+            ]},
+            { question: "According to the passage, what is one benefit of AI in education?", options: [
+                { text: "It replaces teachers completely", correct: false },
+                { text: "It provides individualized learning experiences", correct: true },
+                { text: "It increases student workload", correct: false },
+                { text: "It reduces education costs", correct: false }
+            ]}
+        ]
+    };
+
+    container.innerHTML = `
+        <div class="reading-passage">
+            <div class="reading-title">${readingPassage.title}</div>
+            <div class="reading-content">${readingPassage.content.replace(/\n/g, '</p><p>')}</div>
+        </div>
+        ${readingPassage.questions.map((q, index) => `
+            <div class="question-block">
+                <div class="question-text"><strong>Q${index + 1}:</strong> ${q.question}</div>
+                <div class="options-grid">
+                    ${q.options.map((opt, optIndex) => `
+                        <div class="option-item">
+                            <input type="radio" name="reading_${index}" id="reading_${index}_${optIndex}" value="${optIndex}">
+                            <label for="reading_${index}_${optIndex}">${String.fromCharCode(65 + optIndex)}. ${opt.text}</label>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `).join('')}
+    `;
 }
 
 let timeLeft = 5400;
