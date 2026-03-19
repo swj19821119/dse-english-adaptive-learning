@@ -2,7 +2,7 @@ name: Deploy to CloudBase
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:
@@ -28,3 +28,4 @@ jobs:
       run: |
         tcb login --apiKeyId $TCB_SECRET_ID --apiKey $TCB_SECRET_KEY
         tcb hosting deploy . / -e testing-0gl3765x0fdfd178
+
