@@ -1,0 +1,14 @@
+# CloudBase部署日志
+.cloudbaserc.local.json
+
+# 临时文件
+*.log
+.DS_Store
+
+# 开发文档（可选，如果不想上传文档）
+*.md
+
+# 脚本文件
+*.sh
+*.js
+*.py

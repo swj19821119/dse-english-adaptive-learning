@@ -1,0 +1,12 @@
+{
+  "name": "dse-english-adaptive-learning",
+  "version": "1.0.0",
+  "description": "DSE英语自适应学习系统 - 静态HTML应用",
+  "main": "index.html",
+  "scripts": {
+    "start": "echo '静态HTML项目，直接在浏览器中打开'"
+  },
+  "keywords": ["DSE", "English", "learning", "static"],
+  "author": "",
+  "license": "MIT"
+}
