@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSE英语自适应学习 - 知识点强化练习 [v2026-03-20-02:30]</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            color: #1f4788;
+        }
+
+        .user-info {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .user-badge {
+            padding: 8px 16px;
+            background: #667eea;
+            color: white;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            padding: 8px 16px;
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .back-btn:hover { background: #da190b; }
+
+        /* KNOWLEDGE POINTS GRID */
+        .knowledge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .knowledge-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .knowledge-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .knowledge-card .icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .knowledge-card .title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .knowledge-card .description {
+            font-size: 13px;
+            opacity: 0.9;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .knowledge-card .progress {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            height: 8px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .knowledge-card .progress-fill {
+            height: 100%;
+            background: #4caf50;
+            border-radius: 10px;
+            transition: width 0.5s;
+        }
+
+        .knowledge-card .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        /* PRACTICE SECTION */
+        .practice-section {
+            display: none;
+            background: #f9f9f9;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .practice-section.active {
+            display: block;
+        }
+
+        .practice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .practice-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .question-block {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s;
+        }
+
+        .question-block:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .question-text {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .explanation {
+            background: #fff9c4;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid #ffc107;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 10px;
+        }
+
+        .option-item {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .option-item:hover {
+            background: #e3f2fd;
+            border-color: #2196F3;
+        }
+
+        .option-item.selected {
+            background: #e3f2fd;
+            border-color: #2196F3;
+        }
+
+        .option-item.correct {
+            background: #e8f5e9;
+            border-color: #4caf50;
+        }
+
+        .option-item.incorrect {
+            background: #ffebee;
+            border-color: #f44336;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+            margin-right: 10px;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: #4caf50;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #999;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #777;
+        }
+
+        /* RESULT SECTION */
+        .result-section {
+            display: none;
+            background: #e8f5e9;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .result-section.show {
+            display: block;
+        }
+
+        .score-display {
+            font-size: 48px;
+            font-weight: bold;
+            color: #4caf50;
+            margin-bottom: 10px;
+        }
+
+        .score-label {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .feedback-text {
+            font-size: 16px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* TIPS SECTION */
+        .tips-section {
+            background: #fff3e0;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #ff9800;
+            margin-top: 20px;
+        }
+
+        .tips-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #e65100;
+            margin-bottom: 10px;
+        }
+
+        .tips-content {
+            font-size: 14px;
+            color: #333;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>📚 DSE英语知识强化练习</h1>
+                <p style="color: #666; margin-top: 5px;">针对性强化训练 · 智能推荐练习 · 实时反馈</p>
+            </div>
+            <div class="user-info">
+                <div class="user-badge" id="userBadge"></div>
+                <button class="back-btn" onclick="window.location.href='index.html'">🏠 返回主页</button>
+            </div>
+        </div>
+
+        <!-- KNOWLEDGE POINTS SELECTION -->
+        <div id="knowledgeSelection">
+            <h2 style="margin-bottom: 20px; color: #333;">选择要强化的知识点:</h2>
+            <div class="knowledge-grid" id="knowledgeGrid"></div>
+        </div>
+
+        <!-- PRACTICE SECTION -->
+        <div class="practice-section" id="practiceSection">
+            <div class="practice-header">
+                <div>
+                    <div class="practice-title" id="practiceTitle">听力理解</div>
+                    <div style="color: #666; font-size: 14px; margin-top: 5px;">
+                        进度: <span id="currentQuestion">1</span>/<span id="totalQuestions">10</span>
+                    </div>
+                </div>
+                <button class="btn btn-secondary" onclick="backToSelection()">← 返回选择</button>
+            </div>
+
+            <div id="questionContainer"></div>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">下一题</button>
+                <button class="btn btn-success" id="submitBtn" onclick="submitPractice()" style="display: none;">提交练习</button>
+            </div>
+        </div>
+
+        <!-- RESULT SECTION -->
+        <div class="result-section" id="resultSection">
+            <div class="score-display" id="scoreDisplay">0/10</div>
+            <div class="score-label">本次练习得分</div>
+            <div class="feedback-text" id="feedbackText"></div>
+            <div style="margin-top: 20px;">
+                <button class="btn btn-primary" onclick="backToSelection()">选择其他知识点</button>
+                <button class="btn btn-success" onclick="retryPractice()">重新练习</button>
+            </div>
+        </div>
+
+        <!-- TIPS SECTION -->
+        <div class="tips-section">
+            <div class="tips-title">💡 学习提示</div>
+            <div class="tips-content">
+                • 根据错题分析系统,针对性强化薄弱知识点<br>
+                • 每个知识点包含10道练习题<br>
+                • 完成后查看详细解析和知识点讲解<br>
+                • 系统会记录你的练习进度和正确率
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 知识点数据
+        const knowledgePoints = [
+            {
+                id: 'listening',
+                title: '听力理解',
+                icon: '🎧',
+                description: 'BBC新闻听力、对话理解、信息提取',
+                progress: 0,
+                completed: 0,
+                total: 10
+            },
+            {
+                id: 'grammar',
+                title: '文法词汇',
+                icon: '📝',
+                description: '时态、语态、从句、词汇辨析',
+                progress: 0,
+                completed: 0,
+                total: 10
+            },
+            {
+                id: 'reading',
+                title: '阅读理解',
+                icon: '📖',
+                description: '文章主旨、细节理解、推理判断',
+                progress: 0,
+                completed: 0,
+                total: 10
+            },
+            {
+                id: 'writing',
+                title: '写作技巧',
+                icon: '✍️',
+                description: '议论文结构、观点表达、语言运用',
+                progress: 0,
+                completed: 0,
+                total: 10
+            },
+            {
+                id: 'vocabulary',
+                title: '词汇扩展',
+                icon: '📚',
+                description: 'DSE高频词汇、同义词、搭配',
+                progress: 0,
+                completed: 0,
+                total: 10
+            },
+            {
+                id: 'pronunciation',
+                title: '发音矫正',
+                icon: '🗣️',
+                description: '音标发音、语调、连读技巧',
+                progress: 0,
+                completed: 0,
+                total: 10
+            }
+        ];
+
+        // 练习题数据
+        const practiceQuestions = {
+            listening: [
+                {
+                    question: "What does the speaker mainly discuss?",
+                    options: [
+                        "The benefits of regular exercise",
+                        "The importance of sleep",
+                        "How to improve diet",
+                        "Stress management techniques"
+                    ],
+                    correct: 1,
+                    explanation: "正确答案是B。演讲者主要讨论了睡眠对健康的重要性,以及如何改善睡眠质量。"
+                },
+                {
+                    question: "According to the speaker, what is the recommended sleep duration?",
+                    options: [
+                        "5-6 hours",
+                        "7-8 hours",
+                        "9-10 hours",
+                        "11-12 hours"
+                    ],
+                    correct: 1,
+                    explanation: "正确答案是B。演讲者建议成年人每天睡眠7-8小时最为合适。"
+                }
+            ],
+            grammar: [
+                {
+                    question: "Choose the correct sentence:",
+                    options: [
+                        "She don't like coffee.",
+                        "She doesn't likes coffee.",
+                        "She doesn't like coffee.",
+                        "She not like coffee."
+                    ],
+                    correct: 2,
+                    explanation: "正确答案是C。第三人称单数否定句用doesn't + 动词原形。"
+                },
+                {
+                    question: "If I _____ more time, I would help you.",
+                    options: [
+                        "have",
+                        "had",
+                        "would have",
+                        "will have"
+                    ],
+                    correct: 1,
+                    explanation: "正确答案是B。虚拟语气第二条件句,从句用过去式had。"
+                }
+            ],
+            reading: [
+                {
+                    question: "What is the main idea of the passage?",
+                    options: [
+                        "The history of technology",
+                        "The impact of AI on society",
+                        "How to use computers",
+                        "The future of smartphones"
+                    ],
+                    correct: 1,
+                    explanation: "正确答案是B。文章主要讨论了人工智能对社会各个方面的影响。"
+                },
+                {
+                    question: "According to the passage, what is a concern about AI?",
+                    options: [
+                        "It is too expensive",
+                        "It may replace human jobs",
+                        "It is not accurate",
+                        "It is difficult to learn"
+                    ],
+                    correct: 1,
+                    explanation: "正确答案是B。文章提到AI可能取代部分人类工作是一个担忧。"
+                }
+            ],
+            writing: [
+                {
+                    question: "What is the best topic sentence for this paragraph?",
+                    options: [
+                        "Technology is good.",
+                        "Technology has transformed education in many ways.",
+                        "Many students use computers.",
+                        "Teachers like technology."
+                    ],
+                    correct: 1,
+                    explanation: "正确答案是B。这是最完整的主题句,涵盖了主要观点和范围。"
+                },
+                {
+                    question: "Which word is a good transition between these sentences?",
+                    options: [
+                        "and",
+                        "however",
+                        "so",
+                        "because"
+                    ],
+                    correct: 1,
+                    explanation: "正确答案是B。however表示转折,适合连接相反的观点。"
+                }
+            ],
+            vocabulary: [
+                {
+                    question: "Choose the word closest in meaning to 'dilemma':",
+                    options: [
+                        "Solution",
+                        "Problem",
+                        "Choice",
+                        "Situation"
+                    ],
+                    correct: 1,
+                    explanation: "正确答案是B。dilemma意为困境、难题,与problem意思最接近。"
+                },
+                {
+                    question: "Which word is the opposite of 'abundant'?",
+                    options: [
+                        "Plentiful",
+                        "Scarce",
+                        "Enough",
+                        "Sufficient"
+                    ],
+                    correct: 1,
+                    explanation: "正确答案是B。abundant意为丰富的,scarce意为稀缺的,两者是反义词。"
+                }
+            ],
+            pronunciation: [
+                {
+                    question: "Which word has a different vowel sound?",
+                    options: [
+                        "cat",
+                        "hat",
+                        "what",
+                        "late"
+                    ],
+                    correct: 3,
+                    explanation: "正确答案是D。late中的a发/eɪ/音,其他三个发/æ/音。"
+                },
+                {
+                    question: "How do you pronounce 'schedule' in American English?",
+                    options: [
+                        "/ˈʃedjuːl/",
+                        "/ˈskedʒuːl/",
+                        "/ˈskedʒuəl/",
+                        "/ˈseɪdjuːl/"
+                    ],
+                    correct: 1,
+                    explanation: "正确答案是B。美式发音中schedule读作/ˈskedʒuːl/。"
+                }
+            ]
+        };
+
+        let currentKnowledgePoint = null;
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let score = 0;
+        let currentUser = null;
+
+        // 初始化
+        function init() {
+            loadUserData();
+            renderKnowledgePoints();
+        }
+
+        // 加载用户数据
+        function loadUserData() {
+            // 从URL获取用户信息
+            const urlParams = new URLSearchParams(window.location.search);
+            const user = urlParams.get('user');
+            if (user) {
+                currentUser = user;
+                document.getElementById('userBadge').textContent =
+                    user === 'son' ? '👦 小六' : user === 'daughter' ? '👧 小马' : '👨‍🏫 我';
+            }
+
+            // 加载练习进度
+            const progress = localStorage.getItem(`user_${currentUser}_practice_progress`);
+            if (progress) {
+                const progressData = JSON.parse(progress);
+                progressData.forEach(item => {
+                    const kp = knowledgePoints.find(k => k.id === item.id);
+                    if (kp) {
+                        kp.progress = item.progress;
+                        kp.completed = item.completed;
+                    }
+                });
+            }
+        }
+
+        // 渲染知识点卡片
+        function renderKnowledgePoints() {
+            const grid = document.getElementById('knowledgeGrid');
+            grid.innerHTML = knowledgePoints.map(kp => `
+                <div class="knowledge-card" onclick="startPractice('${kp.id}')">
+                    <div class="icon">${kp.icon}</div>
+                    <div class="title">${kp.title}</div>
+                    <div class="description">${kp.description}</div>
+                    <div class="progress">
+                        <div class="progress-fill" style="width: ${kp.progress}%"></div>
+                    </div>
+                    <div class="stats">
+                        <span>已完成: ${kp.completed}/${kp.total}</span>
+                        <span>进度: ${kp.progress}%</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 开始练习
+        function startPractice(knowledgeId) {
+            currentKnowledgePoint = knowledgeId;
+            currentQuestionIndex = 0;
+            userAnswers = [];
+            score = 0;
+
+            const kp = knowledgePoints.find(k => k.id === knowledgeId);
+            document.getElementById('practiceTitle').textContent = kp.title;
+            document.getElementById('totalQuestions').textContent = kp.total;
+
+            document.getElementById('knowledgeSelection').style.display = 'none';
+            document.getElementById('practiceSection').classList.add('active');
+            document.getElementById('resultSection').classList.remove('show');
+
+            loadQuestion();
+        }
+
+        // 加载题目
+        function loadQuestion() {
+            const questions = practiceQuestions[currentKnowledgePoint];
+            if (!questions || currentQuestionIndex >= questions.length) {
+                showResults();
+                return;
+            }
+
+            const question = questions[currentQuestionIndex];
+            document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
+
+            const container = document.getElementById('questionContainer');
+            container.innerHTML = `
+                <div class="question-block">
+                    <div class="question-text">
+                        <strong>Question ${currentQuestionIndex + 1}:</strong> ${question.question}
+                    </div>
+                    <div class="options-grid">
+                        ${question.options.map((opt, index) => `
+                            <div class="option-item" onclick="selectOption(${index})" id="option-${index}">
+                                ${String.fromCharCode(65 + index)}. ${opt}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="explanation" id="explanation" style="display: none;">
+                        <strong>解析:</strong> ${question.explanation}
+                    </div>
+                </div>
+            `;
+
+            // 更新按钮状态
+            const isLast = currentQuestionIndex === questions.length - 1;
+            document.getElementById('nextBtn').style.display = isLast ? 'none' : 'inline-block';
+            document.getElementById('submitBtn').style.display = isLast ? 'inline-block' : 'none';
+        }
+
+        // 选择选项
+        function selectOption(index) {
+            // 清除之前的选择
+            document.querySelectorAll('.option-item').forEach(el => {
+                el.classList.remove('selected', 'correct', 'incorrect');
+            });
+
+            // 标记当前选择
+            const option = document.getElementById(`option-${index}`);
+            option.classList.add('selected');
+
+            // 检查答案
+            const question = practiceQuestions[currentKnowledgePoint][currentQuestionIndex];
+            if (index === question.correct) {
+                option.classList.add('correct');
+                score++;
+            } else {
+                option.classList.add('incorrect');
+                // 显示正确答案
+                document.getElementById(`option-${question.correct}`).classList.add('correct');
+            }
+
+            // 显示解析
+            document.getElementById('explanation').style.display = 'block';
+
+            userAnswers[index] = index;
+        }
+
+        // 下一题
+        function nextQuestion() {
+            if (userAnswers.length === 0) {
+                alert('请先选择答案!');
+                return;
+            }
+            currentQuestionIndex++;
+            loadQuestion();
+        }
+
+        // 提交练习
+        function submitPractice() {
+            showResults();
+        }
+
+        // 显示结果
+        function showResults() {
+            const questions = practiceQuestions[currentKnowledgePoint];
+            const total = questions.length;
+            const percentage = Math.round((score / total) * 100);
+
+            document.getElementById('scoreDisplay').textContent = `${score}/${total}`;
+            document.getElementById('feedbackText').innerHTML = `
+                <p><strong>正确率: ${percentage}%</strong></p>
+                <p>${getFeedback(percentage)}</p>
+            `;
+
+            document.getElementById('practiceSection').classList.remove('active');
+            document.getElementById('resultSection').classList.add('show');
+
+            // 保存进度
+            saveProgress(score, total);
+        }
+
+        // 获取反馈
+        function getFeedback(percentage) {
+            if (percentage >= 80) {
+                return "🎉 太棒了!你已经掌握了这个知识点!";
+            } else if (percentage >= 60) {
+                return "👍 不错!继续努力,你会做得更好!";
+            } else {
+                return "💪 需要多加练习!建议查看解析,重点复习错题。";
+            }
+        }
+
+        // 保存进度
+        function saveProgress(score, total) {
+            const kp = knowledgePoints.find(k => k.id === currentKnowledgePoint);
+            if (kp) {
+                kp.completed = score;
+                kp.progress = Math.round((score / total) * 100);
+
+                // 保存到LocalStorage
+                const progressData = knowledgePoints.map(k => ({
+                    id: k.id,
+                    progress: k.progress,
+                    completed: k.completed
+                }));
+                localStorage.setItem(`user_${currentUser}_practice_progress`, JSON.stringify(progressData));
+            }
+        }
+
+        // 返回选择
+        function backToSelection() {
+            document.getElementById('knowledgeSelection').style.display = 'block';
+            document.getElementById('practiceSection').classList.remove('active');
+            document.getElementById('resultSection').classList.remove('show');
+            renderKnowledgePoints();
+        }
+
+        // 重新练习
+        function retryPractice() {
+            startPractice(currentKnowledgePoint);
+        }
+
+        // 初始化
+        init();
+    </script>
+</body>
+</html>

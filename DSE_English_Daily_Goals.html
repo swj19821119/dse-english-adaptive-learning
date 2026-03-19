@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSE英语自适应学习 - 每日学习目标 [v2026-03-20-02:40]</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            color: #1f4788;
+        }
+
+        .user-info {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .user-badge {
+            padding: 8px 16px;
+            background: #667eea;
+            color: white;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            padding: 8px 16px;
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .back-btn:hover { background: #da190b; }
+
+        /* DATE DISPLAY */
+        .date-display {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .date-display h2 {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .date-display p {
+            font-size: 16px;
+            color: #666;
+        }
+
+        /* OVERVIEW CARD */
+        .overview-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .overview-card .progress-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 8px solid rgba(255,255,255,0.3);
+            border-top-color: #4caf50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            animation: spin 2s linear infinite;
+        }
+
+        .overview-card .progress-value {
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        .overview-card .progress-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* GOALS GRID */
+        .goals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .goal-card {
+            background: #f9f9f9;
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s;
+        }
+
+        .goal-card:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .goal-card.completed {
+            border-color: #4caf50;
+            background: #e8f5e9;
+        }
+
+        .goal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .goal-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .goal-status {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .goal-status.pending {
+            background: #fff3e0;
+            color: #ff9800;
+        }
+
+        .goal-status.completed {
+            background: #e8f5e9;
+            color: #4caf50;
+        }
+
+        .goal-progress {
+            background: #e0e0e0;
+            border-radius: 10px;
+            height: 20px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .goal-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 10px;
+            transition: width 0.5s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .goal-description {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .goal-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+        }
+
+        .btn-success {
+            background: #4caf50;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #45a049;
+        }
+
+        /* STREAK SECTION */
+        .streak-section {
+            background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .streak-value {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .streak-label {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        /* TIPS SECTION */
+        .tips-section {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #2196F3;
+            margin-top: 20px;
+        }
+
+        .tips-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1976D2;
+            margin-bottom: 10px;
+        }
+
+        .tips-content {
+            font-size: 14px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>🎯 DSE英语每日学习目标</h1>
+                <p style="color: #666; margin-top: 5px;">设定目标 · 追踪进度 · 持续进步</p>
+            </div>
+            <div class="user-info">
+                <div class="user-badge" id="userBadge"></div>
+                <button class="back-btn" onclick="window.location.href='index.html'">🏠 返回主页</button>
+            </div>
+        </div>
+
+        <!-- DATE DISPLAY -->
+        <div class="date-display">
+            <h2 id="todayDate"></h2>
+            <p id="todayDay"></p>
+        </div>
+
+        <!-- OVERVIEW CARD -->
+        <div class="overview-card">
+            <div class="progress-circle">
+                <div>
+                    <div class="progress-value" id="overallProgress">0%</div>
+                    <div class="progress-label">今日完成</div>
+                </div>
+            </div>
+            <p style="font-size: 18px; margin-top: 15px;">继续努力,你今天可以做得更好! 💪</p>
+        </div>
+
+        <!-- STREAK SECTION -->
+        <div class="streak-section">
+            <div class="streak-value" id="streakDays">0</div>
+            <div class="streak-label">连续学习天数</div>
+        </div>
+
+        <!-- GOALS GRID -->
+        <h3 style="margin-bottom: 20px; color: #333;">今日学习目标</h3>
+        <div class="goals-grid" id="goalsGrid"></div>
+
+        <!-- TIPS SECTION -->
+        <div class="tips-section">
+            <div class="tips-title">💡 学习建议</div>
+            <div class="tips-content">
+                • 设定合理的学习目标,不要过于苛刻<br>
+                • 完成一个小目标就给自己一些奖励<br>
+                • 每天坚持学习,哪怕只有15分钟<br>
+                • 定期回顾和调整你的学习计划
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">设置目标</div>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        // 默认学习目标
+        const defaultGoals = [
+            {
+                id: 'listening',
+                title: '听力练习',
+                description: '完成30分钟BBC听力训练',
+                target: 30, // 分钟
+                unit: '分钟',
+                icon: '🎧',
+                current: 0,
+                completed: false,
+                link: 'DSE_English_YouTube_Listening.html'
+            },
+            {
+                id: 'grammar',
+                title: '文法词汇',
+                description: '完成20道文法词汇题',
+                target: 20, // 题
+                unit: '题',
+                icon: '📝',
+                current: 0,
+                completed: false,
+                link: 'DSE_English_Practice_System.html?section=grammar'
+            },
+            {
+                id: 'reading',
+                title: '阅读理解',
+                description: '阅读1篇英语文章',
+                target: 1, // 篇
+                unit: '篇',
+                icon: '📖',
+                current: 0,
+                completed: false,
+                link: 'DSE_English_Practice_System.html?section=reading'
+            },
+            {
+                id: 'writing',
+                title: '写作练习',
+                description: '完成1篇作文(200词)',
+                target: 200, // 词
+                unit: '词',
+                icon: '✍️',
+                current: 0,
+                completed: false,
+                link: 'DSE_English_Multiuser_Test.html'
+            },
+            {
+                id: 'pronunciation',
+                title: '发音训练',
+                description: '练习20个单词发音',
+                target: 20, // 词
+                unit: '词',
+                icon: '🗣️',
+                current: 0,
+                completed: false,
+                link: 'DSE_English_Pronunciation_Training.html'
+            },
+            {
+                id: 'vocabulary',
+                title: '词汇记忆',
+                description: '记忆30个新单词',
+                target: 30, // 词
+                unit: '词',
+                icon: '📚',
+                current: 0,
+                completed: false,
+                link: 'DSE_English_Practice_System.html?section=vocabulary'
+            }
+        ];
+
+        let goals = [];
+        let streakDays = 0;
+        let currentUser = null;
+
+        // 初始化
+        function init() {
+            loadUserData();
+            loadGoals();
+            loadStreak();
+            updateDateDisplay();
+            renderGoals();
+            updateOverview();
+        }
+
+        // 加载用户数据
+        function loadUserData() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const user = urlParams.get('user');
+            if (user) {
+                currentUser = user;
+                document.getElementById('userBadge').textContent =
+                    user === 'son' ? '👦 小六' : user === 'daughter' ? '👧 小马' : '👨‍🏫 我';
+            }
+        }
+
+        // 加载学习目标
+        function loadGoals() {
+            const savedGoals = localStorage.getItem(`user_${currentUser}_daily_goals`);
+            if (savedGoals) {
+                const today = new Date().toDateString();
+                const goalsData = JSON.parse(savedGoals);
+                // 如果是新的一天,重置进度
+                if (goalsData.date !== today) {
+                    goals = JSON.parse(JSON.stringify(defaultGoals));
+                    saveGoals();
+                } else {
+                    goals = goalsData.goals;
+                }
+            } else {
+                goals = JSON.parse(JSON.stringify(defaultGoals));
+                saveGoals();
+            }
+        }
+
+        // 保存学习目标
+        function saveGoals() {
+            localStorage.setItem(`user_${currentUser}_daily_goals`, JSON.stringify({
+                date: new Date().toDateString(),
+                goals: goals
+            }));
+        }
+
+        // 加载连续学习天数
+        function loadStreak() {
+            const savedStreak = localStorage.getItem(`user_${currentUser}_streak`);
+            if (savedStreak) {
+                streakDays = parseInt(savedStreak);
+            }
+            document.getElementById('streakDays').textContent = streakDays;
+        }
+
+        // 更新日期显示
+        function updateDateDisplay() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+            document.getElementById('todayDate').textContent = now.toLocaleDateString('zh-CN', options);
+        }
+
+        // 渲染学习目标
+        function renderGoals() {
+            const grid = document.getElementById('goalsGrid');
+            grid.innerHTML = goals.map(goal => {
+                const progress = Math.round((goal.current / goal.target) * 100);
+                const isCompleted = progress >= 100;
+
+                return `
+                <div class="goal-card ${isCompleted ? 'completed' : ''}">
+                    <div class="goal-header">
+                        <div class="goal-title">${goal.icon} ${goal.title}</div>
+                        <div class="goal-status ${isCompleted ? 'completed' : 'pending'}">
+                            ${isCompleted ? '✓ 已完成' : '进行中'}
+                        </div>
+                    </div>
+                    <div class="goal-description">${goal.description}</div>
+                    <div class="goal-progress">
+                        <div class="goal-progress-fill" style="width: ${progress}%">
+                            ${progress}%
+                        </div>
+                    </div>
+                    <div class="goal-actions">
+                        <button class="btn btn-primary" onclick="openModal('${goal.id}')">
+                            更新进度
+                        </button>
+                        ${!isCompleted ? `
+                        <button class="btn btn-success" onclick="markComplete('${goal.id}')">
+                            标记完成
+                        </button>
+                        ` : `
+                        <button class="btn btn-success" onclick="startPractice('${goal.link}')">
+                            继续练习
+                        </button>
+                        `}
+                    </div>
+                </div>
+            `;
+            }).join('');
+        }
+
+        // 更新概览
+        function updateOverview() {
+            const totalGoals = goals.length;
+            const completedGoals = goals.filter(g => g.completed).length;
+            const overallProgress = Math.round((completedGoals / totalGoals) * 100);
+            document.getElementById('overallProgress').textContent = `${overallProgress}%`;
+        }
+
+        // 打开模态框
+        function openModal(goalId) {
+            const goal = goals.find(g => g.id === goalId);
+            if (!goal) return;
+
+            document.getElementById('modalTitle').textContent = `更新: ${goal.title}`;
+            document.getElementById('modalBody').innerHTML = `
+                <div class="form-group">
+                    <label class="form-label">当前进度 (${goal.unit})</label>
+                    <input type="number" class="form-input" id="progressInput"
+                           value="${goal.current}" min="0" max="${goal.target}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">目标: ${goal.target} ${goal.unit}</label>
+                </div>
+                <button class="btn btn-primary" onclick="updateGoal('${goalId}')"
+                        style="width: 100%; margin-top: 10px;">更新</button>
+            `;
+            document.getElementById('modal').classList.add('show');
+        }
+
+        // 关闭模态框
+        function closeModal() {
+            document.getElementById('modal').classList.remove('show');
+        }
+
+        // 更新目标进度
+        function updateGoal(goalId) {
+            const progress = parseInt(document.getElementById('progressInput').value);
+            const goal = goals.find(g => g.id === goalId);
+            if (goal) {
+                goal.current = Math.min(progress, goal.target);
+                goal.completed = goal.current >= goal.target;
+                saveGoals();
+                renderGoals();
+                updateOverview();
+                checkStreak();
+                closeModal();
+            }
+        }
+
+        // 标记完成
+        function markComplete(goalId) {
+            const goal = goals.find(g => g.id === goalId);
+            if (goal) {
+                goal.current = goal.target;
+                goal.completed = true;
+                saveGoals();
+                renderGoals();
+                updateOverview();
+                checkStreak();
+            }
+        }
+
+        // 开始练习
+        function startPractice(link) {
+            window.location.href = `${link}?user=${currentUser}`;
+        }
+
+        // 检查连续学习天数
+        function checkStreak() {
+            const completedToday = goals.every(g => g.completed);
+            if (completedToday) {
+                const lastDate = localStorage.getItem(`user_${currentUser}_last_streak_date`);
+                const today = new Date().toDateString();
+
+                if (lastDate !== today) {
+                    const yesterday = new Date();
+                    yesterday.setDate(yesterday.getDate() - 1);
+                    const yesterdayStr = yesterday.toDateString();
+
+                    if (lastDate === yesterdayStr) {
+                        streakDays++;
+                    } else if (lastDate !== today) {
+                        streakDays = 1;
+                    }
+
+                    localStorage.setItem(`user_${currentUser}_streak`, streakDays);
+                    localStorage.setItem(`user_${currentUser}_last_streak_date`, today);
+                    document.getElementById('streakDays').textContent = streakDays;
+                }
+            }
+        }
+
+        // 初始化
+        init();
+    </script>
+</body>
+</html>
