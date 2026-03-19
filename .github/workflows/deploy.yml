@@ -25,6 +25,7 @@ jobs:
       env:
         TCB_SECRET_ID: ${{ secrets.TCB_SECRET_ID }}
         TCB_SECRET_KEY: ${{ secrets.TCB_SECRET_KEY }}
+        TCB_ENV_ID: testing-0gl3765x0fdfd178
       run: |
-        tcb login --apiKeyId $TCB_SECRET_ID --apiKey $TCB_SECRET_KEY
-        tcb hosting deploy . / -e testing-0gl3765x0fdfd178
+        tcb login --key
+        tcb hosting deploy . / -e $TCB_ENV_ID
