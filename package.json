@@ -4,7 +4,9 @@
   "description": "DSE英语自适应学习系统 - 静态HTML应用",
   "main": "index.html",
   "scripts": {
-    "start": "echo '静态HTML项目，直接在浏览器中打开'"
+    "start": "echo '静态HTML项目，直接在浏览器中打开'",
+    "build": "echo '静态HTML项目，无需构建'",
+    "preinstall": "echo '跳过预安装'"
   },
   "keywords": ["DSE", "English", "learning", "static"],
   "author": "",
