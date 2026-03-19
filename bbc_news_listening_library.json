@@ -1,0 +1,402 @@
+{
+  "bbcNewsListeningLibrary": {
+    "description": "BBC英文新闻听力库 - 真实音源 + 自适应难度 + 自动题目生成",
+    "newsCategories": [
+      "Business",
+      "International",
+      "Science & Environment",
+      "Health",
+      "Technology"
+    ],
+    "difficultyLevels": {
+      "1": {
+        "name": "Foundation - Simple News",
+        "characteristics": "Short sentences, common vocabulary, clear pronunciation",
+        "newsTypes": ["Daily brief news (1-2 minutes)", "Weather/Sports"],
+        "vocabulary": "1000-1500 common words",
+        "examples": [
+          {
+            "id": "news_1_1",
+            "title": "BBC Learning English - 6 Minute English",
+            "source": "BBC Learning English YouTube",
+            "duration": "6 minutes",
+            "topic": "Everyday topics",
+            "difficulty": 1,
+            "vocabularyLevel": "Elementary",
+            "description": "Slow, clear English with explanations",
+            "listeningFocus": ["Main topic identification", "Key words", "Simple comprehension"]
+          }
+        ]
+      },
+      "2": {
+        "name": "Developing - Intermediate News",
+        "characteristics": "Moderate complexity, academic vocabulary, varied pronunciation",
+        "newsTypes": ["BBC Learning English video", "BBC News Stories (3-5 min)"],
+        "vocabulary": "2000-2500 words",
+        "examples": [
+          {
+            "id": "news_2_1",
+            "title": "BBC World Service - News Brief",
+            "source": "BBC World Service",
+            "duration": "5-7 minutes",
+            "topic": "International news",
+            "difficulty": 2,
+            "vocabularyLevel": "Intermediate",
+            "description": "Natural speed with clear news reporting",
+            "listeningFocus": ["Main idea + supporting details", "Inference", "Context understanding"]
+          },
+          {
+            "id": "news_2_2",
+            "title": "BBC News - Weekly Explainer",
+            "source": "BBC News",
+            "duration": "7-10 minutes",
+            "topic": "In-depth topic explanation",
+            "difficulty": 2,
+            "vocabularyLevel": "Upper-Intermediate",
+            "description": "Multiple speakers, varied accents",
+            "listeningFocus": ["Different perspectives", "Complex ideas", "Nuanced language"]
+          }
+        ]
+      },
+      "3": {
+        "name": "Proficient - Advanced News",
+        "characteristics": "Complex ideas, academic vocabulary, multiple speakers",
+        "newsTypes": ["BBC Newsday", "BBC Hardtalk (interviews)", "BBC documentary excerpts"],
+        "vocabulary": "3000+ words",
+        "examples": [
+          {
+            "id": "news_3_1",
+            "title": "BBC Newsday",
+            "source": "BBC World Service",
+            "duration": "30 minutes (we use 5-10 min excerpt)",
+            "topic": "Multiple international stories",
+            "difficulty": 3,
+            "vocabularyLevel": "Advanced",
+            "description": "Professional news delivery, multiple stories",
+            "listeningFocus": ["Quick comprehension", "Multiple topics", "Speaker intent"]
+          },
+          {
+            "id": "news_3_2",
+            "title": "BBC Hardtalk Interview",
+            "source": "BBC World Service",
+            "duration": "full: 30 min (excerpt: 5-8 min)",
+            "topic": "Interview with experts/politicians",
+            "difficulty": 3,
+            "vocabularyLevel": "Academic",
+            "description": "In-depth discussion, debate format",
+            "listeningFocus": ["Argument structure", "Persuasion techniques", "Critical thinking"]
+          }
+        ]
+      },
+      "4": {
+        "name": "Advanced - Near-Native Level",
+        "characteristics": "Sophisticated discourse, specialized vocabulary, natural speed",
+        "newsTypes": ["BBC Radio 4", "BBC Documentaries", "BBC Debates"],
+        "vocabulary": "Advanced academic vocabulary",
+        "examples": [
+          {
+            "id": "news_4_1",
+            "title": "BBC Radio 4 - Today Programme (excerpt)",
+            "source": "BBC Radio 4",
+            "duration": "full: ongoing (excerpt: 8-10 min)",
+            "topic": "Deep-dive current affairs",
+            "difficulty": 4,
+            "vocabularyLevel": "Sophisticated",
+            "description": "Complex stories, expert analysis",
+            "listeningFocus": ["Nuanced argument", "Implicit meaning", "Cultural context"]
+          }
+        ]
+      }
+    },
+    "listeningQuestionTemplates": {
+      "comprehension": [
+        {
+          "type": "Main Idea",
+          "template": "What is the main topic of this news story?",
+          "difficulty": 1,
+          "skills": ["Global comprehension"]
+        },
+        {
+          "type": "Specific Details",
+          "template": "According to the report, what did [person/organization] do?",
+          "difficulty": 1,
+          "skills": ["Listening for facts"]
+        },
+        {
+          "type": "Inference",
+          "template": "What can you infer about [topic] from this report?",
+          "difficulty": 2,
+          "skills": ["Reading between the lines"]
+        },
+        {
+          "type": "Speaker Opinion",
+          "template": "What is the speaker's attitude towards [issue]?",
+          "difficulty": 2,
+          "skills": ["Tone recognition"]
+        },
+        {
+          "type": "Vocabulary in Context",
+          "template": "What does '[word]' mean in this context?",
+          "difficulty": 2,
+          "skills": ["Contextual vocabulary"]
+        },
+        {
+          "type": "Sequence & Causation",
+          "template": "What happened first/as a result of...?",
+          "difficulty": 2,
+          "skills": ["Logical flow"]
+        },
+        {
+          "type": "Critical Analysis",
+          "template": "What evidence does the reporter use to support this claim?",
+          "difficulty": 3,
+          "skills": ["Critical thinking"]
+        },
+        {
+          "type": "Multiple Perspectives",
+          "template": "How do different speakers view this issue?",
+          "difficulty": 3,
+          "skills": ["Comparative analysis"]
+        },
+        {
+          "type": "Implicit Meaning",
+          "template": "What is implied (but not directly stated) about...?",
+          "difficulty": 3,
+          "skills": ["Deep understanding"]
+        }
+      ]
+    },
+    "sampleQuestions": {
+      "news_1_1_example": {
+        "newsTitle": "BBC Learning English: Benefits of Exercise",
+        "duration": "6 minutes",
+        "listeningFocus": "Simple vocabulary, clear structure",
+        "questions": [
+          {
+            "id": "q_1",
+            "type": "Main Idea",
+            "question": "What is the main topic discussed in this episode?",
+            "options": [
+              "A) The history of exercise",
+              "B) The benefits of regular physical activity",
+              "C) How to become a professional athlete",
+              "D) The best types of gyms"
+            ],
+            "correct": "B",
+            "explanation": "The episode clearly focuses on why exercise is beneficial for health.",
+            "vocabulary": ["benefits", "physical activity", "health"]
+          },
+          {
+            "id": "q_2",
+            "type": "Specific Details",
+            "question": "According to the report, how often should people exercise?",
+            "options": [
+              "A) Once a week",
+              "B) Every day",
+              "C) At least 30 minutes most days",
+              "D) Only weekends"
+            ],
+            "correct": "C",
+            "explanation": "The report mentions WHO guidelines about 30 minutes of moderate exercise.",
+            "vocabulary": ["guidelines", "moderate", "frequency"]
+          },
+          {
+            "id": "q_3",
+            "type": "Vocabulary in Context",
+            "question": "What does 'cardiovascular' mean in this context?",
+            "options": [
+              "A) Heart and blood vessels",
+              "B) Leg muscles",
+              "C) Mental health",
+              "D) Bone strength"
+            ],
+            "correct": "A",
+            "explanation": "'Cardiovascular' refers to the heart and circulatory system.",
+            "vocabulary": ["cardiovascular", "heart", "circulation"]
+          }
+        ]
+      },
+      "news_2_1_example": {
+        "newsTitle": "BBC World Service: Climate Change Summit",
+        "duration": "7 minutes",
+        "listeningFocus": "Natural speed, multiple speakers",
+        "questions": [
+          {
+            "id": "q_4",
+            "type": "Inference",
+            "question": "Why does the reporter emphasize the urgency of climate action?",
+            "options": [
+              "A) To make the story more interesting",
+              "B) Because scientists warn of serious consequences",
+              "C) To criticize government policies",
+              "D) To promote environmental organizations"
+            ],
+            "correct": "B",
+            "explanation": "The reporter's emphasis reflects the scientific consensus on climate risks.",
+            "vocabulary": ["urgency", "consequences", "scientific consensus"]
+          },
+          {
+            "id": "q_5",
+            "type": "Speaker Opinion",
+            "question": "What is the politician's position on renewable energy?",
+            "options": [
+              "A) It is too expensive",
+              "B) It should be expanded quickly",
+              "C) It is unreliable",
+              "D) It is not necessary"
+            ],
+            "correct": "B",
+            "explanation": "The politician expresses commitment to increasing renewable energy investment.",
+            "vocabulary": ["renewable", "investment", "position"]
+          }
+        ]
+      },
+      "news_3_1_example": {
+        "newsTitle": "BBC Hardtalk Interview - Tech Industry Expert",
+        "duration": "8 minutes (excerpt)",
+        "listeningFocus": "Complex discussion, varied perspectives",
+        "questions": [
+          {
+            "id": "q_6",
+            "type": "Critical Analysis",
+            "question": "What evidence does the expert use to support their argument about AI regulation?",
+            "options": [
+              "A) Personal opinions about technology",
+              "B) Case studies of previous regulatory failures",
+              "C) Statistics on AI development costs",
+              "D) Predictions about future problems"
+            ],
+            "correct": "B",
+            "explanation": "The expert references historical examples to illustrate the need for regulation.",
+            "vocabulary": ["evidence", "regulation", "argument"]
+          },
+          {
+            "id": "q_7",
+            "type": "Multiple Perspectives",
+            "question": "How do the interviewer and interviewee disagree about government's role?",
+            "options": [
+              "A) The interviewer wants more regulation, the expert wants less",
+              "B) The expert wants immediate action, the interviewer wants patience",
+              "C) Both agree completely",
+              "D) The interviewer wants industry-led solutions, the expert prefers government oversight"
+            ],
+            "correct": "D",
+            "explanation": "Their exchange reveals different views on who should lead policy development.",
+            "vocabulary": ["regulation", "government oversight", "perspective"]
+          }
+        ]
+      }
+    },
+    "implementationGuide": {
+      "howItWorks": [
+        "1. 选择合适的BBC新闻（按难度分级）",
+        "2. 学生听1-2分钟的新闻片段（或看字幕版）",
+        "3. 回答3-5个理解题",
+        "4. 系统立即显示答案和讲解",
+        "5. 学到新词汇和表达方式"
+      ],
+      "advantages": [
+        "✅ 真实发音 - 适应多种英式发音",
+        "✅ 实时新闻 - 学到当前流行的话题和词汇",
+        "✅ 专业讲述 - 学习专业的英文表达",
+        "✅ 不同口音 - 接触多种口音训练听力",
+        "✅ 文化了解 - 同时了解国际新闻",
+        "✅ 自然速度 - 逐步适应真实对话速度"
+      ],
+      "resources": {
+        "level1": [
+          "BBC Learning English (YouTube)",
+          "BBC Learning English - 6 Minute English",
+          "BBC World Service - Simple Stories"
+        ],
+        "level2": [
+          "BBC News Stories",
+          "BBC Learning English Videos",
+          "BBC World Service - News Brief"
+        ],
+        "level3": [
+          "BBC Newsday (5-10 min excerpt)",
+          "BBC Hardtalk Interview (5-8 min excerpt)",
+          "BBC World Service - Documentary",
+          "BBC Radio - News Feature"
+        ],
+        "level4": [
+          "BBC Radio 4 - Today Programme",
+          "BBC Radio 4 - Newsnight",
+          "BBC Documentaries",
+          "BBC Debates"
+        ]
+      }
+    }
+  },
+  "qaGenerationRules": {
+    "description": "根据BBC新闻自动生成听力理解题的规则",
+    "rules": [
+      {
+        "priority": 1,
+        "rule": "总是包括1道主要思想题 - 检查全局理解",
+        "weight": "25%"
+      },
+      {
+        "priority": 2,
+        "rule": "包括2道具体细节题 - 检查有效听取",
+        "weight": "35%"
+      },
+      {
+        "priority": 3,
+        "rule": "包括1道推理题 - 检查理解能力",
+        "weight": "25%"
+      },
+      {
+        "priority": 4,
+        "rule": "包括1道词汇题 - 学习新单词",
+        "weight": "15%"
+      }
+    ],
+    "adaptToLevel": {
+      "1": "主要用简单的Main Idea和Specific Details题",
+      "2": "混合Comprehension和Inference题",
+      "3": "加入Critical Analysis和Multiple Perspectives题",
+      "4": "主要用Implicit Meaning和Advanced Analysis题"
+    }
+  },
+  "listeningContent": {
+    "weeklySchedule": [
+      {
+        "day": "Monday",
+        "topic": "Business & Economy",
+        "newsSource": "BBC News - Business",
+        "duration": "5-7 min",
+        "difficulty": "Adaptive"
+      },
+      {
+        "day": "Tuesday",
+        "topic": "Science & Technology",
+        "newsSource": "BBC News - Science & Environment",
+        "duration": "5-7 min",
+        "difficulty": "Adaptive"
+      },
+      {
+        "day": "Wednesday",
+        "topic": "International News",
+        "newsSource": "BBC World Service",
+        "duration": "5-7 min",
+        "difficulty": "Adaptive"
+      },
+      {
+        "day": "Thursday",
+        "topic": "Health & Medicine",
+        "newsSource": "BBC News - Health",
+        "duration": "5-7 min",
+        "difficulty": "Adaptive"
+      },
+      {
+        "day": "Friday",
+        "topic": "Cultural & Sports",
+        "newsSource": "BBC News - Culture",
+        "duration": "5-7 min",
+        "difficulty": "Adaptive"
+      }
+    ]
+  }
+}

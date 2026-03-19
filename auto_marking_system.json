@@ -1,0 +1,183 @@
+{
+  "answerKey": {
+    "listening1": {
+      "correct": "A",
+      "explanation": "The man asks the woman to order. She orders a cappuccino, so the main action is to order coffee."
+    },
+    "listening2": {
+      "correct": "B",
+      "explanation": "The announcement says 'next Saturday'. Saturday is the correct answer."
+    },
+    "q1": {
+      "correct": "B",
+      "topic": "Conditional Sentences (Type 3)",
+      "explanation": "Use 'would have + past participle' for unfulfilled conditions in the past. Structure: If + past perfect, would have + past participle"
+    },
+    "q2": {
+      "correct": "A",
+      "topic": "Prepositions + Gerund",
+      "explanation": "After prepositions (despite, despite, in spite of), use -ing form. 'Despite studying hard...' is correct."
+    },
+    "q3": {
+      "correct": "B",
+      "topic": "Subjunctive Mood",
+      "explanation": "After 'insist', 'demand', 'suggest' + that, use subjunctive: 'that + base verb'. 'that the report be completed' is correct."
+    },
+    "q4": {
+      "correct": "C",
+      "topic": "Contrast Connectives",
+      "explanation": "'Despite' is a preposition showing contrast and takes a noun/gerund. 'Despite his wealth' is correct."
+    },
+    "q5": {
+      "correct": "A",
+      "topic": "Word Forms (Noun)",
+      "explanation": "After possessive 'the scientist's', use noun form. 'contribution' is a noun meaning the act of contributing."
+    },
+    "q6": {
+      "correct": "B",
+      "topic": "Reading Comprehension",
+      "explanation": "The passage explicitly states renewable energy 'generate electricity without producing harmful emissions'."
+    },
+    "q7": {
+      "correct": "C",
+      "topic": "Reading Inference",
+      "explanation": "The passage says 'the cost of renewable energy technology has decreased significantly'."
+    },
+    "q8": {
+      "correct": "A",
+      "topic": "Vocabulary in Context",
+      "explanation": "'Combat' means to fight against. 'Combat climate change' = fight against climate change."
+    }
+  },
+  "vocabularyList": {
+    "resilient": {
+      "definition": "able to recover quickly from difficulties",
+      "example": "The company was resilient enough to survive the economic crisis.",
+      "level": "Academic"
+    },
+    "profound": {
+      "definition": "very deep or having great intellectual depth",
+      "example": "The research had a profound impact on medical science.",
+      "level": "Academic"
+    },
+    "pragmatic": {
+      "definition": "dealing with things in a practical, realistic way",
+      "example": "We need a pragmatic approach to solve this problem.",
+      "level": "Academic"
+    },
+    "ambiguous": {
+      "definition": "having more than one possible meaning; unclear",
+      "example": "The instructions were ambiguous, causing confusion.",
+      "level": "Academic"
+    },
+    "inhibit": {
+      "definition": "to prevent or hinder; to restrain",
+      "example": "Fear can inhibit personal growth.",
+      "level": "Academic"
+    },
+    "trivial": {
+      "definition": "of little value, importance, or significance",
+      "example": "Don't worry about trivial issues; focus on important ones.",
+      "level": "Academic"
+    },
+    "sustainable": {
+      "definition": "able to be maintained at a certain level without depleting resources",
+      "example": "We need sustainable solutions for environmental problems.",
+      "level": "Academic"
+    },
+    "skeptical": {
+      "definition": "having doubts; not easily convinced",
+      "example": "Scientists remained skeptical of the new theory.",
+      "level": "Academic"
+    }
+  },
+  "learningPathways": {
+    "0-40": {
+      "level": "Level 1-2",
+      "focus": [
+        "Master basic verb tenses (present, past, future)",
+        "Learn common prepositions and their uses",
+        "Build core vocabulary (1000-1500 words)",
+        "Practice simple sentence structures",
+        "Improve listening with dictation exercises"
+      ],
+      "dailyPlan": {
+        "morning": "20 min grammar drills + 10 min vocabulary",
+        "afternoon": "15 min listening practice",
+        "evening": "20 min reading + 10 min writing"
+      },
+      "resources": [
+        "Grammar: Verb tenses mastery",
+        "Vocab: Common English words list",
+        "Listening: BBC Learning English basics"
+      ]
+    },
+    "40-70": {
+      "level": "Level 2-3",
+      "focus": [
+        "Conditional sentences (all types)",
+        "Complex sentence structures with connectives",
+        "Academic vocabulary expansion",
+        "Reading comprehension strategies",
+        "Essay writing basics"
+      ],
+      "dailyPlan": {
+        "morning": "15 min grammar + 15 min vocabulary",
+        "afternoon": "20 min reading comprehension",
+        "evening": "15 min writing + 10 min listening"
+      },
+      "resources": [
+        "Grammar: Conditional sentences guide",
+        "Vocab: Academic word list (2000 words)",
+        "Writing: Essay structure templates"
+      ]
+    },
+    "70-85": {
+      "level": "Level 3-4",
+      "focus": [
+        "Advanced grammar structures",
+        "Subjunctive mood and formal expressions",
+        "Sophisticated vocabulary and idioms",
+        "Critical reading and analysis",
+        "Persuasive writing techniques"
+      ],
+      "dailyPlan": {
+        "morning": "15 min advanced grammar + 15 min vocabulary",
+        "afternoon": "20 min reading + analysis",
+        "evening": "20 min essay writing + 5 min listening"
+      },
+      "resources": [
+        "Grammar: Subjunctive mood and inversions",
+        "Vocab: Idioms and collocations",
+        "Writing: Argumentative essay structure"
+      ]
+    },
+    "85-100": {
+      "level": "Level 4-5",
+      "focus": [
+        "Near-native fluency development",
+        "Subtle grammar nuances and stylistic variations",
+        "Advanced academic vocabulary",
+        "Critical thinking and debate skills",
+        "Refined writing with varied sentence structures"
+      ],
+      "dailyPlan": {
+        "morning": "10 min advanced topic study + 20 min vocabulary exploration",
+        "afternoon": "20 min critique reading (literary analysis)",
+        "evening": "20 min creative/analytical writing + 10 min listening to podcasts"
+      },
+      "resources": [
+        "Grammar: Stylistic variations and tone",
+        "Vocab: Nuanced and specialized terms",
+        "Writing: Academic and creative writing projects"
+      ]
+    }
+  },
+  "feedbackTemplates": {
+    "grammarError": "You made an error in {{topic}}. The correct answer is '{{correct}}' because {{explanation}}. To practice: Try rewriting 5 sentences using this structure.",
+    "vocabError": "The word '{{word}}' means '{{definition}}'. Example: {{example}}. Similar words to learn: {{similar}}",
+    "listeningError": "For listening, focus on: 1) Listen for key information first, 2) Don't translate mentally, 3) Practice daily.",
+    "readingError": "For reading comprehension, the key is: 1) Skim first for main idea, 2) Scan for specific information, 3) Infer meaning from context.",
+    "writingComment": "Your essay shows {{strength}}, but needs improvement in {{weakness}}. Suggestion: {{suggestion}}"
+  }
+}

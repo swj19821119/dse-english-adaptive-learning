@@ -1,0 +1,375 @@
+{
+  "knowledgePoints": {
+    "conditional_sentences": {
+      "name": "Conditional Sentences (If...)",
+      "difficulty": "foundation",
+      "type": "grammar",
+      "subtopics": [
+        {
+          "name": "Type 1: Real Future (If + Present, will + base verb)",
+          "examples": ["If it rains, I will stay home"],
+          "difficulty": 1,
+          "questions": [
+            {
+              "id": "cond_1_1",
+              "text": "If you study hard, you _____ pass the exam.",
+              "options": ["A) will pass", "B) would pass", "C) would have passed", "D) pass"],
+              "correct": "A",
+              "explanation": "Type 1 conditional: certain future. Use 'will + base verb'."
+            },
+            {
+              "id": "cond_1_2",
+              "text": "If she calls, I _____ answer immediately.",
+              "options": ["A) answer", "B) will answer", "C) would answer", "D) answered"],
+              "correct": "B",
+              "explanation": "Type 1: future certainty. Present + will + base verb."
+            }
+          ]
+        },
+        {
+          "name": "Type 2: Imaginary Present (If + Past, would + base verb)",
+          "examples": ["If I were rich, I would travel"],
+          "difficulty": 2,
+          "questions": [
+            {
+              "id": "cond_2_1",
+              "text": "If I were you, I _____ this job.",
+              "options": ["A) would accept", "B) accept", "C) would have accepted", "D) will accept"],
+              "correct": "A",
+              "explanation": "Type 2 conditional: imaginary present. If + past simple, would + base verb."
+            },
+            {
+              "id": "cond_2_2",
+              "text": "If he had more time, he _____ join us.",
+              "options": ["A) will join", "B) would join", "C) joins", "D) joined"],
+              "correct": "B",
+              "explanation": "Type 2: impossible present situation. Use 'would + base verb'."
+            }
+          ]
+        },
+        {
+          "name": "Type 3: Imaginary Past (If + Had + Past Participle, would have + Past Participle)",
+          "examples": ["If I had known, I would have helped"],
+          "difficulty": 3,
+          "questions": [
+            {
+              "id": "cond_3_1",
+              "text": "If I had known about the accident, I _____ my friend.",
+              "options": ["A) would notify", "B) would have notified", "C) will notify", "D) have notified"],
+              "correct": "B",
+              "explanation": "Type 3 conditional: past regret. If + past perfect, would have + past participle."
+            },
+            {
+              "id": "cond_3_2",
+              "text": "If they had arrived earlier, they _____ the beginning.",
+              "options": ["A) would see", "B) would have seen", "C) see", "D) had seen"],
+              "correct": "B",
+              "explanation": "Type 3: unfulfilled past condition. Use 'would have + past participle'."
+            }
+          ]
+        }
+      ]
+    },
+    "prepositions_gerund": {
+      "name": "Prepositions + Gerund",
+      "difficulty": "foundation",
+      "type": "grammar",
+      "subtopics": [
+        {
+          "name": "Basic Prepositions + -ing",
+          "examples": ["despite studying, in addition to working"],
+          "difficulty": 1,
+          "questions": [
+            {
+              "id": "prep_1_1",
+              "text": "Despite _____ hard, she failed the test.",
+              "options": ["A) studying", "B) study", "C) to study", "D) studied"],
+              "correct": "A",
+              "explanation": "After prepositions, always use gerund (-ing form)."
+            },
+            {
+              "id": "prep_1_2",
+              "text": "In addition to _____ English, he studies French.",
+              "options": ["A) study", "B) to study", "C) studying", "D) studies"],
+              "correct": "C",
+              "explanation": "Preposition 'in addition to' + gerund."
+            }
+          ]
+        },
+        {
+          "name": "Advanced Preposition Phrases",
+          "examples": ["instead of, by means of, without"],
+          "difficulty": 2,
+          "questions": [
+            {
+              "id": "prep_2_1",
+              "text": "Instead of _____ home, he went to the gym.",
+              "options": ["A) go", "B) going", "C) goes", "D) to go"],
+              "correct": "B",
+              "explanation": "'Instead of' is a preposition phrase requiring gerund."
+            }
+          ]
+        }
+      ]
+    },
+    "subjunctive_mood": {
+      "name": "Subjunctive Mood",
+      "difficulty": "intermediate",
+      "type": "grammar",
+      "subtopics": [
+        {
+          "name": "Subjunctive after demand/insist/suggest",
+          "examples": ["I insist that she be present"],
+          "difficulty": 2,
+          "questions": [
+            {
+              "id": "subj_1_1",
+              "text": "The manager insisted that the report _____ by Friday.",
+              "options": ["A) is completed", "B) be completed", "C) will be completed", "D) has been"],
+              "correct": "B",
+              "explanation": "After 'insist', use subjunctive: that + be + past participle (passive)."
+            }
+          ]
+        }
+      ]
+    },
+    "reading_comprehension": {
+      "name": "Reading Comprehension",
+      "difficulty": "mixed",
+      "type": "reading",
+      "subtopics": [
+        {
+          "name": "Main Idea & Supporting Details",
+          "difficulty": 1,
+          "passages": [
+            {
+              "id": "read_1_1",
+              "passage": "Renewable energy has emerged as one of the most critical solutions to combat climate change. Unlike fossil fuels, which release carbon dioxide and contribute to global warming, renewable energy sources such as solar and wind power generate electricity without producing harmful emissions.",
+              "questions": [
+                {
+                  "id": "read_q_1_1",
+                  "text": "What is the main advantage of renewable energy?",
+                  "options": ["A) It is cheaper", "B) It produces no emissions", "C) It is available everywhere", "D) It is new"],
+                  "correct": "B"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Inference & Analysis",
+          "difficulty": 2,
+          "passages": [
+            {
+              "id": "read_2_1",
+              "passage": "The study examined 500 participants over 10 years. Those who exercised regularly showed 40% lower rates of depression and anxiety compared to the sedentary group. Researchers concluded that physical activity significantly impacts mental health.",
+              "questions": [
+                {
+                  "id": "read_q_2_1",
+                  "text": "What can be inferred from the study?",
+                  "options": ["A) Exercise causes depression", "B) All people should exercise", "C) Physical activity may improve mental health", "D) Depression prevents exercise"],
+                  "correct": "C"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "vocabulary": {
+      "name": "Academic Vocabulary",
+      "difficulty": "mixed",
+      "type": "vocab",
+      "words": [
+        {
+          "word": "resilient",
+          "meaning": "able to recover quickly",
+          "example": "The company was resilient enough to survive the crisis.",
+          "difficulty": 2,
+          "questions": [
+            {
+              "id": "vocab_1",
+              "text": "Despite the challenges, the team remained _____.",
+              "options": ["A) fragile", "B) resilient", "C) weak", "D) broken"],
+              "correct": "B"
+            }
+          ]
+        },
+        {
+          "word": "pragmatic",
+          "meaning": "dealing with things in a practical way",
+          "example": "His pragmatic approach solved the problem quickly.",
+          "difficulty": 2,
+          "questions": [
+            {
+              "id": "vocab_2",
+              "text": "Instead of dreaming, she took a _____ approach to her career.",
+              "options": ["A) romantic", "B) pragmatic", "C) lazy", "D) artistic"],
+              "correct": "B"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "reinforcementQuestions": {
+    "conditional_error": [
+      {
+        "id": "reinf_cond_1",
+        "topic": "Conditional Sentences Type 1",
+        "difficulty": 1,
+        "text": "If you don't hurry, you _____ late for school.",
+        "options": ["A) will be", "B) would be", "C) are", "D) were"],
+        "correct": "A",
+        "explanation": "Type 1: certain future consequence"
+      },
+      {
+        "id": "reinf_cond_2",
+        "topic": "Conditional Sentences Type 2",
+        "difficulty": 2,
+        "text": "If I had a million dollars, I _____ a house.",
+        "options": ["A) would buy", "B) will buy", "C) buy", "D) bought"],
+        "correct": "A",
+        "explanation": "Type 2: imaginary present situation"
+      },
+      {
+        "id": "reinf_cond_3",
+        "topic": "Conditional Sentences Type 3",
+        "difficulty": 3,
+        "text": "If she had studied harder, she _____ the exam.",
+        "options": ["A) would pass", "B) would have passed", "C) passes", "D) passed"],
+        "correct": "B",
+        "explanation": "Type 3: regret about past action"
+      }
+    ],
+    "preposition_error": [
+      {
+        "id": "reinf_prep_1",
+        "topic": "Prepositions + Gerund",
+        "difficulty": 1,
+        "text": "Before _____ home, check your bag.",
+        "options": ["A) leaving", "B) leave", "C) to leave", "D) left"],
+        "correct": "A",
+        "explanation": "After 'before', use gerund form"
+      },
+      {
+        "id": "reinf_prep_2",
+        "topic": "Advanced Prepositions",
+        "difficulty": 2,
+        "text": "Without _____ practice, you can't improve.",
+        "options": ["A) daily", "B) to practice", "C) practice", "D) practicing"],
+        "correct": "D",
+        "explanation": "'Without' requires gerund form"
+      }
+    ],
+    "reading_error": [
+      {
+        "id": "reinf_read_1",
+        "topic": "Main Idea Recognition",
+        "difficulty": 1,
+        "passage": "Birds migrate south for winter to find food. This journey can be thousands of miles long.",
+        "text": "Why do birds migrate?",
+        "options": ["A) For vacation", "B) To find food", "C) To escape enemies", "D) For fun"],
+        "correct": "B",
+        "explanation": "The passage directly states migration is to find food"
+      }
+    ]
+  },
+  "difficultyLevels": {
+    "1": {
+      "name": "Level 1 - Foundation",
+      "scoreRange": [0, 40],
+      "characteristics": "Basic grammar, simple vocabulary, straightforward reading",
+      "nextLevel": "Level 2 - Developing",
+      "focusAreas": ["Basic verb tenses", "Common prepositions", "Simple sentence structure"],
+      "estimatedProgress": "2-3 weeks to advance"
+    },
+    "2": {
+      "name": "Level 2 - Developing",
+      "scoreRange": [40, 60],
+      "characteristics": "Intermediate grammar, academic vocabulary, moderate complexity",
+      "nextLevel": "Level 3 - Proficient",
+      "focusAreas": ["Conditional sentences", "Complex structures", "Inference in reading"],
+      "estimatedProgress": "2-3 weeks to advance"
+    },
+    "3": {
+      "name": "Level 3 - Proficient",
+      "scoreRange": [60, 75],
+      "characteristics": "Advanced grammar, sophisticated vocabulary, complex analysis",
+      "nextLevel": "Level 4 - Advanced",
+      "focusAreas": ["Subjunctive mood", "Nuanced vocabulary", "Critical thinking"],
+      "estimatedProgress": "3-4 weeks to advance"
+    },
+    "4": {
+      "name": "Level 4 - Advanced",
+      "scoreRange": [75, 90],
+      "characteristics": "Near-native fluency, subtle grammar distinctions, analytical depth",
+      "nextLevel": "Level 5 - Mastery",
+      "focusAreas": ["Stylistic variations", "Academic discourse", "Advanced writing"],
+      "estimatedProgress": "4+ weeks to advance"
+    },
+    "5": {
+      "name": "Level 5 - Mastery",
+      "scoreRange": [90, 100],
+      "characteristics": "Native-like proficiency, sophisticated analysis, creative expression",
+      "nextLevel": "Achieved!",
+      "focusAreas": ["Refinement", "Specialized topics", "Personal interests"],
+      "estimatedProgress": "Continuous improvement"
+    }
+  },
+  "adaptiveAlgorithm": {
+    "description": "动态调整算法 - 根据学生表现自动调整下一次测试难度",
+    "rules": [
+      {
+        "condition": "score < 40",
+        "action": "保持Level 1，加强基础",
+        "nextTest": "Level 1 + 5道巩固题",
+        "focusArea": "basic_grammar_and_vocabulary"
+      },
+      {
+        "condition": "score 40-60",
+        "action": "Level 1 → Level 2",
+        "nextTest": "混合Level 1和Level 2的题目",
+        "focusArea": "intermediate_structures"
+      },
+      {
+        "condition": "score 60-75",
+        "action": "Level 2 → Level 3",
+        "nextTest": "混合Level 2和Level 3的题目",
+        "focusArea": "advanced_grammar"
+      },
+      {
+        "condition": "score 75-90",
+        "action": "Level 3 → Level 4",
+        "nextTest": "完全Level 4题目（DSE真题难度）",
+        "focusArea": "exam_simulation"
+      },
+      {
+        "condition": "score >= 90",
+        "action": "Level 4 → Level 5",
+        "nextTest": "Level 5高难度题目",
+        "focusArea": "mastery_and_specialization"
+      }
+    ]
+  },
+  "progressTracking": {
+    "fields": [
+      "testDate",
+      "score",
+      "difficultyLevel",
+      "maskedTopics",
+      "weakTopics",
+      "improvementRate",
+      "estimatedDaysToNextLevel"
+    ],
+    "example": {
+      "testDate": "2025-03-20",
+      "score": 65,
+      "difficultyLevel": 2,
+      "maskedTopics": ["Type 1 Conditionals", "Basic Prepositions"],
+      "weakTopics": ["Type 3 Conditionals", "Subjunctive Mood"],
+      "improvementRate": "5% per day",
+      "estimatedDaysToNextLevel": 14
+    }
+  }
+}
