@@ -29,11 +29,6 @@ jobs:
         # 创建 CloudBase 配置目录
         mkdir -p ~/.tcb
         # 创建配置文件
-        cat > ~/.tcb/config.json << EOF
-{
-  "secretId": "$TCB_SECRET_ID",
-  "secretKey": "$TCB_SECRET_KEY"
-}
-EOF
+        echo "{\"secretId\":\"$TCB_SECRET_ID\",\"secretKey\":\"$TCB_SECRET_KEY\"}" > ~/.tcb/config.json
         # 部署到 CloudBase
         tcb hosting deploy . / -e testing-0gl3765x0fdfd178
